@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+build/*.txt
+build/*.cmake
+build/CMakeFiles
+build/Makefile
+build/CMakeFiles/*
+build/emscripten/artoolkitplus/CMakeFiles
+build/emscripten/artoolkitplus
+build/emscripten/artoolkitplus/*

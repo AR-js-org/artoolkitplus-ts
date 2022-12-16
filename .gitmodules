@@ -1,0 +1,3 @@
+[submodule "emscripten/artoolkitplus"]
+	path = emscripten/artoolkitplus
+	url = https://github.com/paroj/artoolkitplus.git

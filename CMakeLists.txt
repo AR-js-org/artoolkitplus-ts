@@ -1,0 +1,32 @@
+cmake_minimum_required( VERSION 3.1 )
+project( DLIB_EM )
+
+set( CMAKE_CXX_STANDARD 17 )
+set(COMPRESSION_DEBUG_FLAG " -O0 ")
+set(COMPRESSION_RELEASE_FLAG " -Oz ")
+set(DEBUG_FLAGS " -g -sASSERTIONS=1 --profiling -s DEMANGLE_SUPPORT=1 ")
+set(MEMORY_OPTION " -s TOTAL_MEMORY=268435456 -s ALLOW_MEMORY_GROWTH=1 ")
+set(FLAGS " -sFORCE_FILESYSTEM -s EXPORTED_RUNTIME_METHODS=['FS'] ")
+set(POST_JS " --post-js ../js/artoolkitplus_post.api.js ")
+set(INCLUDES " -I../emscripten/artoolkitplus ")
+set(LINK_LIBS " ./emscripten/artoolkitplus/lib/libARToolKitPlus.a ")
+set(NOINLINE " -fno-inline-functions")
+
+add_subdirectory(emscripten/artoolkitplus)
+
+include_directories(emscripten/artoolkitplus/include)
+
+# different commands for Debug or Release mode.
+if(CMAKE_BUILD_TYPE STREQUAL Release)   
+    add_executable(artoolkitplus_em emscripten/artoolkitplus_em.cpp )
+    add_dependencies(artoolkitplus_em ARToolKitPlus)
+    target_link_libraries(artoolkitplus_em ${ARToolKitPlus} )
+    set_target_properties(artoolkitplus_em PROPERTIES LINK_FLAGS " ${COMPRESSION_RELEASE_FLAG} ${NOINLINE} ${MEMORY_OPTION} ${POST_JS} ${INCLUDES} ${SRC} ${LINK_LIBS} --bind ${FLAGS} ")
+elseif(CMAKE_BUILD_TYPE STREQUAL Debug)
+    add_executable(artoolkitplus_em_debug emscripten/artoolkitplus_em.cpp )
+    add_dependencies(artoolkitplus_em_debug ARToolKitPlus)
+    target_link_libraries(artoolkitplus_em_debug ${ARToolKitPlus} )
+    set_target_properties(artoolkitplus_em_debug PROPERTIES LINK_FLAGS " ${COMPRESSION_DEBUG_FLAG} ${NOINLINE} ${MEMORY_OPTION} ${POST_JS} ${DEBUG_FLAGS} ${INCLUDES} ${SRC} ${LINK_LIBS} --bind ${FLAGS} ")
+else()
+    message("Unsupported build type")
+endif()
