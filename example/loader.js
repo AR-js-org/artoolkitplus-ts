@@ -6,11 +6,21 @@ function loadCalib(url, callback, errorCallback) {
     if (!t.init) {
       if (callback) callback(id); setTimeout(writeCallback, 10);
     } else {
-      //var id = Module.transformImage(filename);
-      //const t = new Module.TrackerSingleMarker(640, 480, 8, 6, 6, 6, 0)
-
       var id = t.init(filename,  1.0, 1000.0);
       console.log(id);
+      /* printVameraSettings will print the loaded camera settings something like:
+
+        ARToolKitPlus: CamSize 640 , 480
+        ARToolKitPlus: cc = [259.38  213.46]  fc = [492.37  493.26]
+        ARToolKitPlus: kc = [-0.4186 0.1791 -0.0002 0.0026 0.0000 0.0000]
+        ARToolKitPlus: undist_iterations = 10
+
+      */
+      t.printCameraSettings();
+      t.setPatternWidth(2.0);
+      var vec = new Module.vector_int()
+      vec = t.calc(01257)// = t.calc(0)
+      console.log(vec.size());
       if (callback) callback(id);
     }
   };

@@ -15,6 +15,16 @@ public:
   bool init(std::string paramFile, ARFloat nearCLip, ARFloat nFarClip) {
     return TrackerSingleMarker::init(paramFile.c_str(), nearCLip, nFarClip);
   }
+  void printCameraSettings() {
+    TrackerSingleMarker::getCamera()->printSettings();
+  };
+  void setPatternWidth(float width) {
+    TrackerSingleMarker::setPatternWidth(width);
+  };
+  std::vector<int> calc(uintptr_t  nImage) {
+    auto ptrImg = reinterpret_cast<uint8_t*>(nImage);
+    return TrackerSingleMarker::calc(ptrImg);
+  }
 };
 
 #include "bindings.cpp"

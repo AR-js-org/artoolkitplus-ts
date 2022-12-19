@@ -5608,6 +5608,26 @@ var ASM_CONSTS = {
       });
     }
 
+
+  function __emval_incref(handle) {
+      if (handle > 4) {
+        emval_handle_array[handle].refcount += 1;
+      }
+    }
+
+  function requireRegisteredType(rawType, humanName) {
+      var impl = registeredTypes[rawType];
+      if (undefined === impl) {
+          throwBindingError(humanName + " has unknown type " + getTypeName(rawType));
+      }
+      return impl;
+    }
+  function __emval_take_value(type, arg) {
+      type = requireRegisteredType(type, '_emval_take_value');
+      var v = type['readValueFromPointer'](arg);
+      return Emval.toHandle(v);
+    }
+
   function _abort() {
       abort('native code called abort()');
     }
@@ -6476,6 +6496,9 @@ var asmLibraryArg = {
   "_embind_register_std_string": __embind_register_std_string,
   "_embind_register_std_wstring": __embind_register_std_wstring,
   "_embind_register_void": __embind_register_void,
+  "_emval_decref": __emval_decref,
+  "_emval_incref": __emval_incref,
+  "_emval_take_value": __emval_take_value,
   "abort": _abort,
   "emscripten_memcpy_big": _emscripten_memcpy_big,
   "emscripten_resize_heap": _emscripten_resize_heap,
@@ -7041,7 +7064,6 @@ var missingLibrarySymbols = [
   'allocate',
   'registerInheritedInstance',
   'unregisterInheritedInstance',
-  'requireRegisteredType',
   'enumReadValueFromPointer',
   'validateThis',
   'getStringOrSymbol',
