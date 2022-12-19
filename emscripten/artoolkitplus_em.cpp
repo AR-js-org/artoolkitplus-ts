@@ -13,7 +13,7 @@ public:
                             pattHeight, pattSamples, maxLoadPatterns) {}
 
   bool init(std::string paramFile, ARFloat nearCLip, ARFloat nFarClip) {
-    return this->init(paramFile.c_str(), nearCLip, nFarClip);
+    return TrackerSingleMarker::init(paramFile.c_str(), nearCLip, nFarClip);
   }
 };
 
