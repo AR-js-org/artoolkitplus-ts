@@ -3,7 +3,7 @@ function loadCalib(url, callback, errorCallback) {
   var filename = '/load_calib_' + file_count++ + '.cal';
   let t;
   var writeCallback = function () {
-    t = new Module.TrackerSingleMarker(640, 480, 8, 6, 6, 6, 0)
+    t = new Module.TrackerSingleMarker(320, 240, 8, 6, 6, 6, 0);
     if (!t.init) {
       if (callback) callback(id); setTimeout(writeCallback, 10);
     } else {

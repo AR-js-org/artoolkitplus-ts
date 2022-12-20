@@ -26,8 +26,9 @@ EMSCRIPTEN_BINDINGS(artoolkitplus) {
 
   class_<TrackerSM>("TrackerSingleMarker")
       .constructor<int, int, int, int, int, int, int>()
-      .function("calc", &TrackerSM::calc, allow_raw_pointer<uint8_t>())
+      .function("calc", &TrackerSM::calc)
       .function("getConfidence", &TrackerSM::getConfidence)
+      .function("getModelViewMatrix", &TrackerSM::getModelViewMatrix)
       .function("init", &TrackerSM::init)
       .function("printCameraSettings", &TrackerSM::printCameraSettings)
       .function("selectBestMarkerByCf", &TrackerSM::selectBestMarkerByCf)
