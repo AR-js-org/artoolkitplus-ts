@@ -35,6 +35,9 @@ public:
   bool setPixelFormat(PIXEL_FORMAT nFormat) {
     return TrackerSingleMarker::setPixelFormat(nFormat);
   }
+  PIXEL_FORMAT getPixelFormat() {
+    return TrackerSingleMarker::getPixelFormat();
+  }
   void printCameraSettings() {
     TrackerSingleMarker::getCamera()->printSettings();
   };
