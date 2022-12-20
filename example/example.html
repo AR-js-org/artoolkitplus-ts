@@ -1,19 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A simple example with artoolkitplus_em</title>
 </head>
+
 <body>
     <script src="../build/artoolkitplus_em_debug.js"></script>
     <script src="loader.js"></script>
     <script>
         console.log(Module);
-        window.addEventListener('artoolkitplus-loaded', function(e) { 
-            loadCalib("data/PGR_M12x0.5_2.5mm.cal", function(e){console.log(e);}, function(err){console.log(err);})
+        window.addEventListener('artoolkitplus-loaded', function (e) {
+            const tracker = loadCalib("data/PGR_M12x0.5_2.5mm.cal", function (tracker) {
+                tracker.setPixelFormat(Module.PIXEL_FORMAT.PIXEL_FORMAT_LUM.value);
+                /* printVameraSettings will print the loaded camera settings something like:
+
+                ARToolKitPlus: CamSize 640 , 480
+                ARToolKitPlus: cc = [259.38  213.46]  fc = [492.37  493.26]
+                ARToolKitPlus: kc = [-0.4186 0.1791 -0.0002 0.0026 0.0000 0.0000]
+                ARToolKitPlus: undist_iterations = 10
+                */
+                tracker.printCameraSettings();
+                tracker.setPatternWidth(2.0);
+                var vec = new Module.vector_int();
+                vec = tracker.calc(01257);
+                console.log(vec.size());
+            }, function (err) { console.log(err); })
         })
     </script>
 </body>
+
 </html>

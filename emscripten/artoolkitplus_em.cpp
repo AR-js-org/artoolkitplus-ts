@@ -1,4 +1,5 @@
 #include <ARToolKitPlus/TrackerSingleMarker.h>
+#include <ARToolKitPlus/ar.h>
 #include <iostream>
 
 using namespace ARToolKitPlus;
@@ -15,14 +16,17 @@ public:
   bool init(std::string paramFile, ARFloat nearCLip, ARFloat nFarClip) {
     return TrackerSingleMarker::init(paramFile.c_str(), nearCLip, nFarClip);
   }
+  bool setPixelFormat(PIXEL_FORMAT nFormat) {
+    return TrackerSingleMarker::setPixelFormat(nFormat);
+  }
   void printCameraSettings() {
     TrackerSingleMarker::getCamera()->printSettings();
   };
   void setPatternWidth(float width) {
     TrackerSingleMarker::setPatternWidth(width);
   };
-  std::vector<int> calc(uintptr_t  nImage) {
-    auto ptrImg = reinterpret_cast<uint8_t*>(nImage);
+  std::vector<int> calc(uintptr_t nImage) {
+    auto ptrImg = reinterpret_cast<uint8_t *>(nImage);
     return TrackerSingleMarker::calc(ptrImg);
   }
 };
