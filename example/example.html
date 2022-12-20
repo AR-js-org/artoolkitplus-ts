@@ -25,9 +25,16 @@
                 */
                 tracker.printCameraSettings();
                 tracker.setPatternWidth(2.0);
+                tracker.setBorderWidth(0.125);
+                tracker.setThreshold(150);
+                tracker.setUndistortionMode(Module.UNDIST_MODE.UNDIST_LUT.value);
+                tracker.setMarkerMode(Module.MARKER_MODE.MARKER_ID_BCH.value);
                 var vec = new Module.vector_int();
                 vec = tracker.calc(01257);
                 console.log(vec.size());
+                tracker.selectBestMarkerByCf();
+                var conf = tracker.getConfidence();
+                console.log(conf);
             }, function (err) { console.log(err); })
         })
     </script>
