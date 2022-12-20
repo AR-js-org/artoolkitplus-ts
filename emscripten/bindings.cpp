@@ -29,6 +29,7 @@ EMSCRIPTEN_BINDINGS(artoolkitplus) {
       .function("calc", &TrackerSM::calc)
       .function("getConfidence", &TrackerSM::getConfidence)
       .function("getModelViewMatrix", &TrackerSM::getModelViewMatrix)
+      .function("getPixelFormat", &TrackerSM::getPixelFormat)
       .function("init", &TrackerSM::init)
       .function("printCameraSettings", &TrackerSM::printCameraSettings)
       .function("selectBestMarkerByCf", &TrackerSM::selectBestMarkerByCf)
