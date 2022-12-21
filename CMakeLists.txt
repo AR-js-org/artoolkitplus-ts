@@ -1,5 +1,5 @@
 cmake_minimum_required( VERSION 3.1 )
-project( DLIB_EM )
+project( ARTOOLKITPLUS_EM )
 
 set( CMAKE_CXX_STANDARD 17 )
 set(COMPRESSION_DEBUG_FLAG " -O0 ")
@@ -10,7 +10,6 @@ set(FLAGS " -sFORCE_FILESYSTEM -s EXPORTED_RUNTIME_METHODS=['FS'] ")
 set(POST_JS " --post-js ../js/artoolkitplus_post.api.js ")
 set(INCLUDES " -I../emscripten/artoolkitplus ")
 set(LINK_LIBS " ./emscripten/artoolkitplus/lib/libARToolKitPlus.a ")
-set(NOINLINE " -fno-inline-functions")
 
 add_subdirectory(emscripten/artoolkitplus)
 
