@@ -7,6 +7,8 @@ EMSCRIPTEN_BINDINGS(artoolkitplus) {
 
   emscripten::function("setup", &setup);
   emscripten::function("update", &update);
+  emscripten::function("getConfidence", &getConfidence);
+  emscripten::function("getModelViewMatrix", &getMVMatrix);
 
   enum_<PIXEL_FORMAT>("PIXEL_FORMAT")
       .value("PIXEL_FORMAT_ABGR", PIXEL_FORMAT_ABGR)

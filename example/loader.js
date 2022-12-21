@@ -40,11 +40,10 @@ function setupSM(url, callback, errorCallback)  {
   var filename = '/load_calib_' + file_count++ + '.cal';
   let t;
   var writeCallback = function () {
-    //t = new Module.TrackerSingleMarker(320, 240, 8, 6, 6, 6, 0);
     if (!Module.setup) {
       if (callback) callback(id); setTimeout(writeCallback, 10);
     } else {
-      if(Module.setup(320, 240, filename,  8, 6, 6, 6, 0)) {
+      if(Module.setup(320, 240, filename, 8, 6, 6, 6, 0)) {
         console.log("Init TrackerSingleMarker");
       };
       if (callback) callback(t);

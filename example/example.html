@@ -14,58 +14,6 @@
     <script>
         console.log(Module);
         window.addEventListener('artoolkitplus-loaded', function (e) {
-            /*const tracker = loadCalib("data/PGR_M12x0.5_2.5mm.cal", function (tracker) {
-                // set the PixelFormat
-                tracker.setPixelFormat(Module.PIXEL_FORMAT.PIXEL_FORMAT_LUM.value);
-                //check if the PixelFormat is correct
-                console.log(tracker.getPixelFormat())
-                 printVameraSettings will print the loaded camera settings something like:
-
-                ARToolKitPlus: CamSize 320, 240
-                ARToolKitPlus: cc = [259.38  213.46]  fc = [492.37  493.26]
-                ARToolKitPlus: kc = [-0.4186 0.1791 -0.0002 0.0026 0.0000 0.0000]
-                ARToolKitPlus: undist_iterations = 10
-                
-                tracker.printCameraSettings();
-                // define size of the marker in OpenGL units
-                tracker.setPatternWidth(2.0);
-                // the marker in the BCH test image has a thin border...
-                tracker.setBorderWidth(0.125);
-                // set a threshold. alternatively we could also activate automatic thresholding
-                tracker.setThreshold(150);
-                // let's use lookup-table undistortion for high-speed
-                // note: LUT only works with images up to 1024x1024
-                tracker.setUndistortionMode(Module.UNDIST_MODE.UNDIST_LUT.value);
-                // switch to simple ID based markers
-                // use the tool in tools/IdPatGen to generate markers
-                tracker.setMarkerMode(Module.MARKER_MODE.MARKER_ID_BCH.value);
-                //console.log(tracker.getMarkerMode());
-
-                fetch("data/image_320_240_8_marker_id_bch_nr0100.raw")
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not OK');
-                        }
-                        return response.arrayBuffer();
-                    })
-                    .then(buff => {
-                        let buffer = new Uint8Array(buff)
-                        console.log(buffer);
-                        var vec = new Module.vector_int();
-                        // here we go, just two calls to find the camera pose
-                        vec = tracker.calc(buffer);
-                        console.log(vec.size());
-                        console.log(vec[0])
-                        tracker.selectBestMarkerByCf();
-                        var conf = tracker.getConfidence();
-                        console.log("confidence", conf * 100);
-                        var matrix = tracker.getModelViewMatrix();
-                        console.log(matrix);
-                    })
-
-                    
-
-            }, function (err) { console.log(err); })*/
             setupSM("data/PGR_M12x0.5_2.5mm.cal", function(){})
             fetch("data/image_320_240_8_marker_id_bch_nr0100.raw")
                     .then(response => {
@@ -81,6 +29,10 @@
                         // here we go, just two calls to find the camera pose
                         vec =  Module.update(buffer);
                         console.log(vec.size());
+                        var conf = Module.getConfidence();
+                        console.log("Marker confidence: ", conf*100, "%");
+                        var matrix = Module.getModelViewMatrix();
+                        console.log("Pose matrix: ", matrix);
                     })
         })
     </script>

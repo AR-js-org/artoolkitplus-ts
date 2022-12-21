@@ -69,10 +69,10 @@ ARToolKitPlus::TrackerSingleMarker *tracker;
 int width, height;
 bool useBCH;
 float markerWidth, halfMarkerWidth;
-float c[ 2 ];
+float c[2];
 
-void setup(int w, int h, string camParamFile,
-           int maxImagePatterns, int pattWidth, int pattHeight, int pattSamples,
+void setup(int w, int h, string camParamFile, int maxImagePatterns,
+           int pattWidth, int pattHeight, int pattSamples,
            int maxLoadPatterns) {
   width = w;
   height = h;
@@ -144,7 +144,7 @@ void setup(int w, int h, string camParamFile,
 
   // tracker->activateVignettingCompensation(true);
 
-  //tracker->setUseDetectLite(false);
+  // tracker->setUseDetectLite(false);
 }
 
 vector<int> update(emscripten::val data_buffer) {
@@ -154,5 +154,20 @@ vector<int> update(emscripten::val data_buffer) {
   cout << "Marker is:" << marker[0] << endl;
   return marker;
 }
+
+float getConfidence() {
+  tracker->selectBestMarkerByCf();
+  return tracker->getConfidence();
+};
+
+emscripten::val getMVMatrix() {
+  emscripten::val arr = emscripten::val::array();
+  const ARFloat *ptr = tracker->getModelViewMatrix();
+  for (auto i = 0; i < 16; i++) {
+    arr.call<void>("push", ptr[i]);
+  }
+  return arr;
+}
+
 
 #include "bindings.cpp"
