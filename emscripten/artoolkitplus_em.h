@@ -52,6 +52,8 @@ public:
   void setup(int w, int h, string camParamFile, int maxImagePatterns, int pattWidth,
         int pattHeight, int pattSamples, int maxLoadPatterns);
   vector<int> update(emscripten::val data_buffer);
+  float getConfidence();
+  emscripten::val getMVMatrix();
 
 private:
   bool useBCH;
