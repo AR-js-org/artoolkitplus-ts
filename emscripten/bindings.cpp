@@ -5,6 +5,9 @@ using namespace emscripten;
 EMSCRIPTEN_BINDINGS(artoolkitplus) {
   register_vector<int>("vector_int");
 
+  emscripten::function("setup", &setup);
+  emscripten::function("update", &update);
+
   enum_<PIXEL_FORMAT>("PIXEL_FORMAT")
       .value("PIXEL_FORMAT_ABGR", PIXEL_FORMAT_ABGR)
       .value("PIXEL_FORMAT_BGRA", PIXEL_FORMAT_BGRA)
@@ -41,5 +44,4 @@ EMSCRIPTEN_BINDINGS(artoolkitplus) {
       .function("setPatternWidth", &TrackerSM::setPatternWidth)
       .function("setThreshold", &TrackerSM::setThreshold)
       .function("setUndistortionMode", &TrackerSM::setUndistortionMode);
-      
 };
