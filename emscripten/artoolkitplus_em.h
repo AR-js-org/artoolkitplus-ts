@@ -45,3 +45,15 @@ public:
 private:
   ARToolKitPlus::TrackerSingleMarker *tracker;
 };
+
+class TrackerSM2 {
+public:
+  TrackerSM2(bool useBCH) { this->useBCH = useBCH; }
+  void setup(int w, int h, string camParamFile, int maxImagePatterns, int pattWidth,
+        int pattHeight, int pattSamples, int maxLoadPatterns);
+  vector<int> update(emscripten::val data_buffer);
+
+private:
+  bool useBCH;
+  ARToolKitPlus::TrackerSingleMarker *tracker;
+};
