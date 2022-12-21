@@ -39,6 +39,7 @@
                 // switch to simple ID based markers
                 // use the tool in tools/IdPatGen to generate markers
                 tracker.setMarkerMode(Module.MARKER_MODE.MARKER_ID_BCH.value);
+                //console.log(tracker.getMarkerMode());
 
                 fetch("data/image_320_240_8_marker_id_bch_nr0100.raw")
                     .then(response => {
