@@ -29,6 +29,26 @@ EMSCRIPTEN_BINDINGS(artoolkitplus) {
       .value("MARKER_ID_SIMPLE", MARKER_ID_SIMPLE)
       .value("MARKER_ID_BCH", MARKER_ID_BCH);
 
+ class_<TrackerSM2>("TrackerSingleMarker2")
+      .constructor<bool>()
+      .function("setup", &TrackerSM2::setup)
+      .function("update", &TrackerSM2::update);
+      //.function("addPattern", &TrackerSM::addPattern)
+      //.function("calc", &TrackerSM::calc)
+      //.function("getConfidence", &TrackerSM::getConfidence)
+      //.function("getMarkerMode", &TrackerSM::getMarkerMode)
+      //.function("getModelViewMatrix", &TrackerSM::getMVMatrix)
+      //.function("getPixelFormat", &TrackerSM::getPixelFormat)
+      //.function("init", &TrackerSM::init)
+      //.function("printCameraSettings", &TrackerSM::printCameraSettings)
+      //.function("selectBestMarkerByCf", &TrackerSM::selectBestMarkerByCf)
+      //.function("setBorderWidth", &TrackerSM::setBorderWidth)
+      //.function("setMarkerMode", &TrackerSM::setMarkerMode)
+      //.function("setPixelFormat", &TrackerSM::setPixelFormat)
+      //.function("setPatternWidth", &TrackerSM::setPatternWidth)
+      //.function("setThreshold", &TrackerSM::setThreshold)
+      //.function("setUndistortionMode", &TrackerSM::setUndistortionMode);
+
   class_<TrackerSM>("TrackerSingleMarker")
       .constructor<int, int, int, int, int, int, int>()
       .function("addPattern", &TrackerSM::addPattern)
