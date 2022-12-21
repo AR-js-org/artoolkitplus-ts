@@ -147,6 +147,20 @@ vector<int> TrackerSM2::update(emscripten::val data_buffer) {
   return marker;
 }
 
+float TrackerSM2::getConfidence() {
+  tracker->selectBestMarkerByCf();
+  return tracker->getConfidence();
+};
+
+emscripten::val TrackerSM2::getMVMatrix() {
+  emscripten::val arr = emscripten::val::array();
+  const ARFloat *ptr = tracker->getModelViewMatrix();
+  for (auto i = 0; i < 16; i++) {
+    arr.call<void>("push", ptr[i]);
+  }
+  return arr;
+}
+
 ARToolKitPlus::TrackerSingleMarker *tracker;
 int width, height;
 bool useBCH;

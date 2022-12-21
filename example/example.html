@@ -29,6 +29,11 @@
                         // here we go, just two calls to find the camera pose
                         vec = tracker.update(buffer);
                         console.log(vec.size());
+                        console.log("Marker found is: ", vec.get(0));
+                        var conf = tracker.getConfidence();
+                        console.log("Marker confidence is: ", conf*100,"%");
+                        var matrix = tracker.getModelViewMatrix();
+                        console.log("Marker pose matrix is:", matrix);
                     })
 
             }, function(err) {})

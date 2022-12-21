@@ -32,12 +32,12 @@ EMSCRIPTEN_BINDINGS(artoolkitplus) {
  class_<TrackerSM2>("TrackerSingleMarker2")
       .constructor<bool>()
       .function("setup", &TrackerSM2::setup)
-      .function("update", &TrackerSM2::update);
+      .function("update", &TrackerSM2::update)
       //.function("addPattern", &TrackerSM::addPattern)
       //.function("calc", &TrackerSM::calc)
-      //.function("getConfidence", &TrackerSM::getConfidence)
+      .function("getConfidence", &TrackerSM2::getConfidence)
       //.function("getMarkerMode", &TrackerSM::getMarkerMode)
-      //.function("getModelViewMatrix", &TrackerSM::getMVMatrix)
+      .function("getModelViewMatrix", &TrackerSM2::getMVMatrix);
       //.function("getPixelFormat", &TrackerSM::getPixelFormat)
       //.function("init", &TrackerSM::init)
       //.function("printCameraSettings", &TrackerSM::printCameraSettings)
