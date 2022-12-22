@@ -5271,23 +5271,6 @@ var ASM_CONSTS = {
       });
     }
 
-  function __embind_register_function(name, argCount, rawArgTypesAddr, signature, rawInvoker, fn) {
-      var argTypes = heap32VectorToArray(argCount, rawArgTypesAddr);
-      name = readLatin1String(name);
-  
-      rawInvoker = embind__requireFunction(signature, rawInvoker);
-  
-      exposePublicSymbol(name, function() {
-        throwUnboundTypeError('Cannot call ' + name + ' due to unbound types', argTypes);
-      }, argCount - 1);
-  
-      whenDependentTypesAreResolved([], argTypes, function(argTypes) {
-        var invokerArgsArray = [argTypes[0] /* return value */, null /* no class 'this'*/].concat(argTypes.slice(1) /* actual params */);
-        replacePublicSymbol(name, craftInvokerFunction(name, invokerArgsArray, null /* no class 'this'*/, rawInvoker, fn), argCount - 1);
-        return [];
-      });
-    }
-
   function integerReadValueFromPointer(name, shift, signed) {
       // integers are quite common, so generate very specialized functions
       switch (shift) {
@@ -6684,7 +6667,6 @@ var asmLibraryArg = {
   "_embind_register_enum": __embind_register_enum,
   "_embind_register_enum_value": __embind_register_enum_value,
   "_embind_register_float": __embind_register_float,
-  "_embind_register_function": __embind_register_function,
   "_embind_register_integer": __embind_register_integer,
   "_embind_register_memory_view": __embind_register_memory_view,
   "_embind_register_std_string": __embind_register_std_string,

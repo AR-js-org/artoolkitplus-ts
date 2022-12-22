@@ -8,19 +8,20 @@ using namespace std;
 
 class TrackerSM {
 public:
-  TrackerSM(int imWidth, int imHeight, int maxImagePatterns = 8,
-            int pattWidth = 6, int pattHeight = 6, int pattSamples = 6,
-            int maxLoadPatterns = 0);
+  TrackerSM(bool useBCH) { this->useBCH = useBCH; }
+  //~TrackerSM();
+
+  void setup(int w, int h, string camParamFile, int maxImagePatterns,
+             int pattWidth, int pattHeight, int pattSamples,
+             int maxLoadPatterns);
 
   int addPattern(std::string nFileName);
 
-  std::vector<int> calc(emscripten::val data_buffer);
+  vector<int> update(emscripten::val data_buffer);
 
   float getConfidence();
 
   emscripten::val getMVMatrix();
-
-  bool init(std::string paramFile, ARFloat nearCLip, ARFloat nFarClip);
 
   bool setPixelFormat(PIXEL_FORMAT nFormat);
 
@@ -34,26 +35,11 @@ public:
 
   void setMarkerMode(MARKER_MODE nMarkerMode);
 
-  // MARKER_MODE getMarkerMode();
-
   void setPatternWidth(float width);
 
   void setThreshold(int nValue);
 
   void setUndistortionMode(UNDIST_MODE nMode);
-
-private:
-  ARToolKitPlus::TrackerSingleMarker *tracker;
-};
-
-class TrackerSM2 {
-public:
-  TrackerSM2(bool useBCH) { this->useBCH = useBCH; }
-  void setup(int w, int h, string camParamFile, int maxImagePatterns, int pattWidth,
-        int pattHeight, int pattSamples, int maxLoadPatterns);
-  vector<int> update(emscripten::val data_buffer);
-  float getConfidence();
-  emscripten::val getMVMatrix();
 
 private:
   bool useBCH;
