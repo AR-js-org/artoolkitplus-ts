@@ -4,17 +4,9 @@ int TrackerSM::addPattern(string nFileName) {
   return tracker->addPattern(nFileName.c_str());
 }
 
-void TrackerSM::setup(int w, int h, string camParamFile, int maxImagePatterns,
+void TrackerSM::setup(string camParamFile, int maxImagePatterns,
                       int pattWidth, int pattHeight, int pattSamples,
                       int maxLoadPatterns) {
-  int width = w;
-  int height = h;
-  this->useBCH = false;
-  float markerWidth = 40.0;
-  float halfMarkerWidth = markerWidth / 2;
-  // c[0] = 0;
-  // c[1] = 0;
-
   // ----------------------------------  AR TK+ STUFF - ripped from the single
   // marker demo app
 
@@ -25,11 +17,9 @@ void TrackerSM::setup(int w, int h, string camParamFile, int maxImagePatterns,
   //  - works with luminance (gray) images
   //  - can load a maximum of "maxLoadPatterns" non-binary pattern
   //  - can detect a maximum of "maxImagePatterns" patterns in one image
-  tracker = new ARToolKitPlus::TrackerSingleMarker(
-      width, height, maxImagePatterns, pattWidth, pattHeight, pattSamples,
+  tracker = make_unique<ARToolKitPlus::TrackerSingleMarker>(
+      this->mWidth, this->mHeight, maxImagePatterns, pattWidth, pattHeight, pattSamples,
       maxLoadPatterns);
-  //	const char* description = tracker->getDescription();
-  //	printf("ARToolKitPlus compile-time information:\n%s\n\n", description);
 
   // set a logger so we can output error messages
   //    tracker->setLogger(&logger);
@@ -38,19 +28,18 @@ void TrackerSM::setup(int w, int h, string camParamFile, int maxImagePatterns,
 
   tracker->setImageProcessingMode(ARToolKitPlus::IMAGE_FULL_RES);
 
-  // Initialize a multimarker tracker with
-  // Camera and marker files
-  // & near and far clipping values for the OpenGL projection matrix
+  // Initialize a Single Marker Tracker with
+  // Camera and near and far clipping values for the OpenGL projection matrix
   if (!tracker->init(camParamFile.c_str(), 1.0f, 1000.0f)) {
 
     printf("ERROR: init() failed\n");
-    delete tracker;
+    tracker = nullptr;
 
     return;
   }
   tracker->getCamera()->printSettings();
   // define size of the marker
-  // tracker->setPatternWidth(80);
+  tracker->setPatternWidth(this->mPatternWidth);
   // multimarkers since it doesnt seem to have this option.
 
   // the marker in the BCH test image has a thin border...
