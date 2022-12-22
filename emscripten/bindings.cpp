@@ -5,11 +5,6 @@ using namespace emscripten;
 EMSCRIPTEN_BINDINGS(artoolkitplus) {
   register_vector<int>("vector_int");
 
-  emscripten::function("setup", &setup);
-  emscripten::function("update", &update);
-  emscripten::function("getConfidence", &getConfidence);
-  emscripten::function("getModelViewMatrix", &getMVMatrix);
-
   enum_<PIXEL_FORMAT>("PIXEL_FORMAT")
       .value("PIXEL_FORMAT_ABGR", PIXEL_FORMAT_ABGR)
       .value("PIXEL_FORMAT_BGRA", PIXEL_FORMAT_BGRA)
@@ -29,35 +24,17 @@ EMSCRIPTEN_BINDINGS(artoolkitplus) {
       .value("MARKER_ID_SIMPLE", MARKER_ID_SIMPLE)
       .value("MARKER_ID_BCH", MARKER_ID_BCH);
 
- class_<TrackerSM2>("TrackerSingleMarker2")
+ class_<TrackerSM>("TrackerSingleMarker")
       .constructor<bool>()
-      .function("setup", &TrackerSM2::setup)
-      .function("update", &TrackerSM2::update)
-      //.function("addPattern", &TrackerSM::addPattern)
-      //.function("calc", &TrackerSM::calc)
-      .function("getConfidence", &TrackerSM2::getConfidence)
-      //.function("getMarkerMode", &TrackerSM::getMarkerMode)
-      .function("getModelViewMatrix", &TrackerSM2::getMVMatrix);
-      //.function("getPixelFormat", &TrackerSM::getPixelFormat)
-      //.function("init", &TrackerSM::init)
-      //.function("printCameraSettings", &TrackerSM::printCameraSettings)
-      //.function("selectBestMarkerByCf", &TrackerSM::selectBestMarkerByCf)
-      //.function("setBorderWidth", &TrackerSM::setBorderWidth)
-      //.function("setMarkerMode", &TrackerSM::setMarkerMode)
-      //.function("setPixelFormat", &TrackerSM::setPixelFormat)
-      //.function("setPatternWidth", &TrackerSM::setPatternWidth)
-      //.function("setThreshold", &TrackerSM::setThreshold)
-      //.function("setUndistortionMode", &TrackerSM::setUndistortionMode);
-
-  class_<TrackerSM>("TrackerSingleMarker")
-      .constructor<int, int, int, int, int, int, int>()
+      .function("setup", &TrackerSM::setup)
+      .function("update", &TrackerSM::update)
       .function("addPattern", &TrackerSM::addPattern)
-      .function("calc", &TrackerSM::calc)
+      //.function("calc", &TrackerSM::calc)
       .function("getConfidence", &TrackerSM::getConfidence)
       //.function("getMarkerMode", &TrackerSM::getMarkerMode)
       .function("getModelViewMatrix", &TrackerSM::getMVMatrix)
       .function("getPixelFormat", &TrackerSM::getPixelFormat)
-      .function("init", &TrackerSM::init)
+      //.function("init", &TrackerSM::init)
       .function("printCameraSettings", &TrackerSM::printCameraSettings)
       .function("selectBestMarkerByCf", &TrackerSM::selectBestMarkerByCf)
       .function("setBorderWidth", &TrackerSM::setBorderWidth)
