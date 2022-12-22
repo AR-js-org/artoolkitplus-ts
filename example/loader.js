@@ -4,11 +4,11 @@ function loadCalib(url, callback, errorCallback) {
   var filename = '/load_calib_' + file_count++ + '.cal';
   let t;
   var writeCallback = function () {
-    t = new Module.TrackerSingleMarker(false);
+    t = new Module.TrackerSingleMarker(false, 320, 240, 80);
     if (!t.setup) {
       if (callback) callback(id); setTimeout(writeCallback, 10);
     } else {
-      if(t.setup(320, 240, filename,  8, 6, 6, 6, 0)) {
+      if(t.setup(filename,  8, 6, 6, 6, 0)) {
         console.log("Init TrackerSingleMarker");
       };
       if (callback) callback(t);

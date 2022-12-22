@@ -1,5 +1,6 @@
 #include <ARToolKitPlus/TrackerSingleMarker.h>
 #include <ARToolKitPlus/ar.h>
+#include <algorithm>
 #include <emscripten/val.h>
 #include <iostream>
 
@@ -8,10 +9,15 @@ using namespace std;
 
 class TrackerSM {
 public:
-  TrackerSM(bool useBCH) { this->useBCH = useBCH; }
+  TrackerSM(bool useBCH, int width, int height, int patternWidth) { 
+    this->useBCH = useBCH; 
+    this->mWidth = width;
+    this->mHeight = height;
+    this->mPatternWidth = patternWidth;
+    };
   //~TrackerSM();
 
-  void setup(int w, int h, string camParamFile, int maxImagePatterns,
+  void setup(string camParamFile, int maxImagePatterns,
              int pattWidth, int pattHeight, int pattSamples,
              int maxLoadPatterns);
 
@@ -43,5 +49,8 @@ public:
 
 private:
   bool useBCH;
-  ARToolKitPlus::TrackerSingleMarker *tracker;
+  int mWidth;
+  int mHeight;
+  int mPatternWidth;
+  unique_ptr<ARToolKitPlus::TrackerSingleMarker> tracker;
 };

@@ -25,7 +25,7 @@ EMSCRIPTEN_BINDINGS(artoolkitplus) {
       .value("MARKER_ID_BCH", MARKER_ID_BCH);
 
  class_<TrackerSM>("TrackerSingleMarker")
-      .constructor<bool>()
+      .constructor<bool, int, int, int>()
       .function("setup", &TrackerSM::setup)
       .function("update", &TrackerSM::update)
       .function("addPattern", &TrackerSM::addPattern)
