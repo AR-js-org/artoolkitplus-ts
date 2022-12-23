@@ -2,7 +2,8 @@
   "name": "artoolkitplus-ts",
   "version": "0.1.0",
   "description": "Typescript ARToolKitPlus port thanks to Emscripten",
-  "main": "ARToolKitPlus.js",
+  "main": "dist/ARToolKitPlus.js",
+  "types": "types/src/ARToolKitPlus.d.ts",
   "directories": {
     "example": "example"
   },
