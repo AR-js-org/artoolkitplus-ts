@@ -3,11 +3,15 @@
         "outDir": "./dist/",
         "sourceMap": true,
         "strict": true,
+        "allowSyntheticDefaultImports": true,
         "noImplicitReturns": true,
         "noImplicitAny": true,
-        "module": "es6",
+        "module": "ESNext",
         "moduleResolution": "node",
-        "target": "es5",
+        "resolveJsonModule": true,                /* Include modules imported with '.json' extension */
+        "declaration": true,                     /* Generates corresponding '.d.ts' file. */
+        "declarationDir": "./types",
+        "target": "ESNext",
         "allowJs": true,
     },
     "include": [

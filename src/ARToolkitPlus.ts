@@ -1,42 +1,47 @@
 import { AbstractARToolkitPlus } from "./abstractions/AbstractARToolkitPlus";
-import ARtoolKitPlus from "../build/artoolkitplus_em_ES6"
+import { IImageObj } from "./abstractions/interfaces";
+import { ARToolkitPlusLoader } from "./ARToolkitPlusLoader";
 export default class ARToolkitPlus implements AbstractARToolkitPlus {
+    private cameraUrl: string;
     private useBCH: boolean;
     private width: number;
     private height: number;
     private patternWidth: number;
-    private static artoolkitplus: any;
-    private static tracker: any;
+    private artoolkitplus: any;
+    private tracker: any;
 
-    constructor(useBCH: boolean, width: number, height: number, patternWidth: number) {
+    constructor(useBCH: boolean, cameraUrl: string, width: number, height: number, patternWidth: number) {
+        this.cameraUrl = cameraUrl;
         this.useBCH = useBCH;
         this.width = width;
         this.height = height;
         this.patternWidth = patternWidth;
-        ARToolkitPlus.artoolkitplus = this.initSM();
     }
 
-    static initSingleTracker(useBCH: boolean, cameraUrl: string, width: number, height: number, patternWidth: number): Promise<AbstractARToolkitPlus> {
-        this.tracker = this.artoolkitplus.TrackerSingleMarker(useBCH, width, height, patternWidth);
-        this.tracker.setup(cameraUrl, 8, 6, 6, 6, 0);
-        return this.tracker;
+    static async initSingleTracker (useBCH: boolean, cameraUrl: string, width: number, height: number, patternWidth: number): Promise<AbstractARToolkitPlus> {
+        const artoolkitPlus = new ARToolkitPlus(useBCH, cameraUrl, width, height, patternWidth);
+        return await artoolkitPlus.initSM();
     };
 
     setup(cameraUrl: string): void {
-        ARToolkitPlus.tracker.setup(cameraUrl, 8, 6, 6, 6, 0);
+        this.tracker.setup(cameraUrl, 8, 6, 6, 6, 0);
     }
 
-    update() { }
+    update(image: IImageObj) {
+        this.tracker.calc(image);
+     }
 
     getConfidence() {
-        return ARToolkitPlus.tracker.getConfidence();
+        return this.tracker.getConfidence();
     }
 
     getModelViewMatrix(): number[] {
-        return ARToolkitPlus.tracker.getModelViewMatrix();
+        return this.tracker.getModelViewMatrix();
     };
 
     private async initSM() {
-        return await ARtoolKitPlus();
+       this.artoolkitplus = await new ARToolkitPlusLoader().init();
+       this.tracker = this.artoolkitplus.loadCalib(this.cameraUrl, this.useBCH, this.width, this.height, this.patternWidth)
+       return this.tracker;
     }
 }
