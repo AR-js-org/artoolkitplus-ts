@@ -39,3 +39,4 @@ build/CMakeFiles/*
 build/emscripten/artoolkitplus/CMakeFiles
 build/emscripten/artoolkitplus
 build/emscripten/artoolkitplus/*
+node_modules
