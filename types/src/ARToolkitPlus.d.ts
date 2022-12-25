@@ -1,11 +1,6 @@
 import { AbstractARToolkitPlus } from "./abstractions/AbstractARToolkitPlus";
 import { IImageObj } from "./abstractions/interfaces";
 export default class ARToolkitPlus extends AbstractARToolkitPlus {
-    private cameraUrl;
-    private useBCH;
-    private width;
-    private height;
-    private patternWidth;
     private artoolkitplus;
     private tracker;
     static PIXEL_FORMAT: any;
