@@ -71,7 +71,6 @@ vector<int> TrackerSM::update(emscripten::val data_buffer) {
   vector<uint8_t> u8 =
       emscripten::convertJSArrayToNumberVector<uint8_t>(data_buffer);
   vector<int> marker = tracker->calc(u8.data());
-  cout << "Marker is:" << marker[0] << endl;
   return marker;
 }
 
