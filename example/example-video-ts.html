@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A simple example with artoolkitplus_em and new dist lib</title>
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+    <video id="video" autoplay loop muted playsinline></video>
+    <canvas id="canvas"></canvas>
+    <script src="../dist/ARToolKitPlus.js"></script>
+
+    <script>
+
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        var width = 640, height = 480;
+        var vec;
+        var ar;
+
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            var hint = {
+                audio: false,
+                video: true
+            };
+            if (window.innerWidth < 800) {
+                var width = (window.innerWidth < window.innerHeight) ? 240 : 360;
+                var height = (window.innerWidth < window.innerHeight) ? 360 : 240;
+
+                var aspectRatio = window.innerWidth / window.innerHeight;
+
+                console.log(width, height);
+
+                hint = {
+                    audio: false,
+                    video: {
+                        facingMode: 'environment',
+                        width: { min: width, max: width }
+                    },
+                };
+
+                console.log(hint);
+            }
+
+            navigator.mediaDevices.getUserMedia(hint).then(function (stream) {
+                console.log(stream);
+                video.srcObject = stream;
+                video.addEventListener('loadedmetadata', function (e) {
+                    console.log(e);
+                    video.play();
+
+                    console.log('video', video, video.videoWidth, video.videoHeight);
+
+                    var canvasWidth = video.videoWidth;
+                    var canvasHeight = video.videoHeight;
+                    canvas.width = canvasWidth;
+                    canvas.height = canvasHeight;
+                    if (video) {
+                        ARToolKitPlus.initTrackerSingleMarker(false, "data/PGR_M12x0.5_2.5mm.cal", width, height, 80).then(
+                            tracker => {
+                                console.log(tracker);
+                                ar = tracker;
+                                // here we go, just two calls to find the camera pose
+                                console.log("PIXEL_FORMAT: ", ARToolKitPlus.PIXEL_FORMAT.PIXEL_FORMAT_LUM)
+                                process();
+                            })
+                    }
+
+                });
+            });
+            function process() {
+                console.log(ar);
+                ctx.drawImage(video, 0, 0, width, height);
+                var image_data = ctx.getImageData(0, 0, width, height);
+
+                if (image_data.data) {
+                    vec = ar.update(image_data.data);
+                    console.log(vec.size());
+                    console.log("Marker found is: ", vec.get(0));
+                    var conf = ar.getConfidence();
+                    console.log("Marker confidence is: ", conf * 100, "%");
+                    var matrix = ar.getModelViewMatrix();
+                    console.log("Marker pose matrix is:", matrix);
+                    ctx.putImageData(image_data, 0, 0);
+                }
+
+                requestAnimationFrame(process);
+            }
+        }
+
+    </script>
+</body>
+
+</html>
