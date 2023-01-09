@@ -92,6 +92,19 @@
                 return out;
             }
 
+            function drawCircle() {
+                var markerPos = ar.getMarkerPos();
+                console.log(markerPos);
+                const radius = 70;
+                ctx.beginPath();
+                ctx.arc(markerPos.x, markerPos.y, radius, 0, 2 * Math.PI, false);
+                ctx.fillStyle = 'green';
+                ctx.fill();
+                ctx.lineWidth = 5;
+                ctx.strokeStyle = '#003300';
+                ctx.stroke();
+            }
+
             function process() {
                 //console.log(ar);
                 ctx.drawImage(video, 0, 0, width, height);
@@ -108,6 +121,8 @@
                     console.log("Marker pose matrix is:", matrix);
                     ctx.putImageData(image_data, 0, 0);
                 }
+
+                drawCircle()
 
                 requestAnimationFrame(process);
             }

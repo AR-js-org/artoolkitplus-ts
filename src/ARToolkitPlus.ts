@@ -33,6 +33,10 @@ export default class ARToolkitPlus extends AbstractARToolkitPlus {
         return this.tracker.getModelViewMatrix();
     };
 
+    public getMarkerPos = (): object => {
+        return this.tracker.getMarkerPos();
+    }
+
     private async initTSM() {
         this.artoolkitplus = await new ARToolkitPlusLoader().init();
 
