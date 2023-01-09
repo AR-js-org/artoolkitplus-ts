@@ -9,17 +9,16 @@ using namespace std;
 
 class TrackerSM {
 public:
-  TrackerSM(bool useBCH, int width, int height, int patternWidth) { 
-    this->useBCH = useBCH; 
+  TrackerSM(bool useBCH, int width, int height, int patternWidth) {
+    this->useBCH = useBCH;
     this->mWidth = width;
     this->mHeight = height;
     this->mPatternWidth = patternWidth;
-    };
+  };
   //~TrackerSM();
 
-  void setup(string camParamFile, int maxImagePatterns,
-             int pattWidth, int pattHeight, int pattSamples,
-             int maxLoadPatterns);
+  void setup(string camParamFile, int maxImagePatterns, int pattWidth,
+             int pattHeight, int pattSamples, int maxLoadPatterns);
 
   int addPattern(std::string nFileName);
 
@@ -29,9 +28,17 @@ public:
 
   emscripten::val getMVMatrix();
 
+  int getMarkerId();
+
+  emscripten::val getMarkerPos();
+
+  emscripten::val getMarkerVertexes();
+
   bool setPixelFormat(PIXEL_FORMAT nFormat);
 
   PIXEL_FORMAT getPixelFormat();
+
+  emscripten::val getProjectionMatrix();
 
   void printCameraSettings();
 
@@ -52,5 +59,8 @@ private:
   int mWidth;
   int mHeight;
   int mPatternWidth;
+  vector<int> mMarkers;
+  ARMarkerInfo *marker_info;
+  int marker_num;
   unique_ptr<ARToolKitPlus::TrackerSingleMarker> tracker;
 };
