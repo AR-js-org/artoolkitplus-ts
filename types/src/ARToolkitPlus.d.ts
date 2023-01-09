@@ -12,5 +12,6 @@ export default class ARToolkitPlus extends AbstractARToolkitPlus {
     update: (image: IImageObj) => void;
     getConfidence: () => number;
     getModelViewMatrix: () => number[];
+    getMarkerPos: () => object;
     private initTSM;
 }
