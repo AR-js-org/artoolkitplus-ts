@@ -4,9 +4,8 @@ int TrackerSM::addPattern(string nFileName) {
   return tracker->addPattern(nFileName.c_str());
 }
 
-void TrackerSM::setup(string camParamFile, int maxImagePatterns,
-                      int pattWidth, int pattHeight, int pattSamples,
-                      int maxLoadPatterns) {
+void TrackerSM::setup(string camParamFile, int maxImagePatterns, int pattWidth,
+                      int pattHeight, int pattSamples, int maxLoadPatterns) {
   // ----------------------------------  AR TK+ STUFF - ripped from the single
   // marker demo app
 
@@ -18,8 +17,8 @@ void TrackerSM::setup(string camParamFile, int maxImagePatterns,
   //  - can load a maximum of "maxLoadPatterns" non-binary pattern
   //  - can detect a maximum of "maxImagePatterns" patterns in one image
   tracker = make_unique<ARToolKitPlus::TrackerSingleMarker>(
-      this->mWidth, this->mHeight, maxImagePatterns, pattWidth, pattHeight, pattSamples,
-      maxLoadPatterns);
+      this->mWidth, this->mHeight, maxImagePatterns, pattWidth, pattHeight,
+      pattSamples, maxLoadPatterns);
 
   // set a logger so we can output error messages
   //    tracker->setLogger(&logger);
@@ -67,11 +66,30 @@ void TrackerSM::setup(string camParamFile, int maxImagePatterns,
   // tracker->setUseDetectLite(false);
 }
 
+int TrackerSM::getMarkerId() { return marker_info->id; };
+
+emscripten::val TrackerSM::getMarkerPos() {
+  emscripten::val obj = emscripten::val::object();
+  obj.set("x", marker_info->pos[0]);
+  obj.set("y", marker_info->pos[1]);
+  return obj;
+}
+
+emscripten::val TrackerSM::getMarkerVertexes() {
+  emscripten::val vertexes = emscripten::val::array();
+  for (auto x = 0; x < 4; x++) {
+    for (auto y = 0; y < 4; y++) {
+      vertexes.call<void>("push", marker_info->vertex[x][y]);
+    }
+  }
+  return vertexes;
+}
+
 vector<int> TrackerSM::update(emscripten::val data_buffer) {
   vector<uint8_t> u8 =
       emscripten::convertJSArrayToNumberVector<uint8_t>(data_buffer);
-  vector<int> marker = tracker->calc(u8.data());
-  return marker;
+  mMarkers = tracker->calc(u8.data(), &marker_info, &marker_num);
+  return mMarkers;
 }
 
 float TrackerSM::getConfidence() {
@@ -93,6 +111,15 @@ bool TrackerSM::setPixelFormat(PIXEL_FORMAT nFormat) {
 }
 
 PIXEL_FORMAT TrackerSM::getPixelFormat() { return tracker->getPixelFormat(); }
+
+emscripten::val TrackerSM::getProjectionMatrix() {
+  emscripten::val arr = emscripten::val::array();
+  const ARFloat *ptr = tracker->getProjectionMatrix();
+  for (auto i = 0; i < 16; i++) {
+    arr.call<void>("push", ptr[i]);
+  }
+  return arr;
+}
 
 void TrackerSM::printCameraSettings() {
   tracker->getCamera()->printSettings();

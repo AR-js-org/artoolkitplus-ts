@@ -37,6 +37,10 @@
                         // changing the Pixel Format only for testing...
                         tracker.setPixelFormat(Module.PIXEL_FORMAT.PIXEL_FORMAT_RGB)
                         console.log("Pixel Format: ", tracker.getPixelFormat())
+                        console.log("Marker pos: ", tracker.getMarkerPos())
+                        console.log("Marker verts: ", tracker.getMarkerVertexes())
+                        console.log("Marker id: ", tracker.getMarkerId())
+                        console.log("Projection Matrix: ", tracker.getProjectionMatrix())
                     })
 
             }, function(err) {})
