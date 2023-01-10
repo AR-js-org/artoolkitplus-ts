@@ -13,5 +13,6 @@ export default class ARToolkitPlus extends AbstractARToolkitPlus {
     getConfidence: () => number;
     getModelViewMatrix: () => number[];
     getMarkerPos: () => object;
+    getMarkerVertexes: () => Array<number>;
     private initTSM;
 }
