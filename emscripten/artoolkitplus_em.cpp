@@ -78,7 +78,7 @@ emscripten::val TrackerSM::getMarkerPos() {
 emscripten::val TrackerSM::getMarkerVertexes() {
   emscripten::val vertexes = emscripten::val::array();
   for (auto x = 0; x < 4; x++) {
-    for (auto y = 0; y < 4; y++) {
+    for (auto y = 0; y < 2; y++) {
       vertexes.call<void>("push", marker_info->vertex[x][y]);
     }
   }

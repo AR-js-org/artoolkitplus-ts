@@ -18,8 +18,11 @@
     <script>
 
         var canvas = document.getElementById('canvas');
+        var overlayCanvas = null;
         var ctx = canvas.getContext('2d');
         var width = 640, height = 480;
+        var canvasWidth;
+        var canvasHeight;
         var vec;
         var ar;
         var videoSize;
@@ -58,8 +61,8 @@
                     console.log('video', video, video.videoWidth, video.videoHeight);
                     videoSize = video.videoWidth * video.videoHeight;
 
-                    var canvasWidth = video.videoWidth;
-                    var canvasHeight = video.videoHeight;
+                    canvasWidth = video.videoWidth;
+                    canvasHeight = video.videoHeight;
                     canvas.width = canvasWidth;
                     canvas.height = canvasHeight;
                     if (video) {
@@ -69,6 +72,7 @@
                                 ar = tracker;
                                 // here we go, just two calls to find the camera pose
                                 console.log("PIXEL_FORMAT: ", ARToolKitPlus.PIXEL_FORMAT.PIXEL_FORMAT_LUM)
+                                createOverlayCanvas()
                                 process();
                             })
                     }
@@ -93,25 +97,74 @@
             }
 
             function drawCircle() {
+                const overlayCtx = overlayCanvas.getContext("2d");
+                clearOverlayCtx();
+
+                // we get the marker center position to draw a small circle.
                 var markerPos = ar.getMarkerPos();
-                console.log(markerPos);
-                const radius = 70;
-                ctx.beginPath();
-                ctx.arc(markerPos.x, markerPos.y, radius, 0, 2 * Math.PI, false);
-                ctx.fillStyle = 'green';
-                ctx.fill();
-                ctx.lineWidth = 5;
-                ctx.strokeStyle = '#003300';
-                ctx.stroke();
+
+                const radius = 5;
+                overlayCtx.beginPath();
+                overlayCtx.arc(markerPos.x, markerPos.y, radius, 0, 2 * Math.PI, false);
+                overlayCtx.fillStyle = 'green';
+                overlayCtx.fill();
+                overlayCtx.lineWidth = 2;
+                overlayCtx.strokeStyle = '#003300';
+                overlayCtx.stroke();
+                overlayCtx.font = "10px serif";
+                overlayCtx.fillStyle = 'red';
+                overlayCtx.fill();
+                overlayCtx.fillText(ar.getMarkerId(), markerPos.x + 10, markerPos.y + 10);
+                overlayCtx.fillStyle = 'green';
+                overlayCtx.fill();
+            }
+
+            function createOverlayCanvas() {
+                overlayCanvas = document.createElement("canvas");
+                overlayCanvas.id = "overlay";
+                overlayCanvas.width = canvasWidth;
+                overlayCanvas.height = canvasHeight;
+                overlayCanvas.style.zIndex = 100;
+                document.body.appendChild(overlayCanvas);
+            }
+
+            function clearOverlayCtx() {
+                const overlayCtx = overlayCanvas.getContext("2d");
+                overlayCtx.clearRect(0, 0, width, height);
+            }
+
+            function drawCorners() {
+                const overlayCtx = overlayCanvas.getContext("2d");
+
+                // We get the 4 corners of the marker to draw a rectangle around it.
+                var corners = ar.getMarkerVertexes();
+                console.log("corners: ", corners);
+
+                overlayCtx.beginPath();
+                overlayCtx.strokeStyle = "blue";
+                overlayCtx.lineWidth = 3;
+
+                // [x1,y1,x2,y2,x3,y3,x4,y4]
+                overlayCtx.moveTo(corners[0], corners[1]);
+                overlayCtx.lineTo(corners[2], corners[3]);
+                overlayCtx.lineTo(corners[4], corners[5]);
+                overlayCtx.lineTo(corners[6], corners[7]);
+                overlayCtx.lineTo(corners[0], corners[1]);
+
+                overlayCtx.stroke();
+            }
+
+            function drawMarkerId() {
+                const overlayCtx = overlayCanvas.getContext("2d");
+                overlayCtx.font = "48px serif";
+                overlayCtx.fillText("Hello world", 10, 50);
             }
 
             function process() {
-                //console.log(ar);
                 ctx.drawImage(video, 0, 0, width, height);
                 var image_data = ctx.getImageData(0, 0, width, height);
 
                 if (image_data.data) {
-                    //console.log(image_data.data);
                     vec = ar.update(grayscale(image_data.data));
                     console.log(vec.size());
                     console.log("Marker found is: ", vec.get(0));
@@ -122,7 +175,9 @@
                     ctx.putImageData(image_data, 0, 0);
                 }
 
-                drawCircle()
+                drawCircle();
+                drawCorners();
+                drawMarkerId();
 
                 requestAnimationFrame(process);
             }

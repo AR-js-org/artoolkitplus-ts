@@ -37,6 +37,10 @@ export default class ARToolkitPlus extends AbstractARToolkitPlus {
         return this.tracker.getMarkerPos();
     }
 
+    public getMarkerVertexes = (): Array<number> => {
+        return this.tracker.getMarkerVertexes();
+    }
+
     private async initTSM() {
         this.artoolkitplus = await new ARToolkitPlusLoader().init();
 
