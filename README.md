@@ -21,4 +21,5 @@ If you want you can also test the video example ( stream from webcam ), check th
 - example-ts.html
 - example-video-ts.html
 - example_ES6.html
+- threejs-video-ts.html
 
