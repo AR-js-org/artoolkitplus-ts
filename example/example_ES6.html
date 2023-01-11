@@ -24,7 +24,6 @@
                     })
                     .then(buff => {
                         let buffer = new Uint8Array(buff)
-                        console.log(buffer);
                         var vec = new artoolkitplus.vector_int();
                         // here we go, just two calls to find the camera pose
                         vec = tracker.update(buffer);

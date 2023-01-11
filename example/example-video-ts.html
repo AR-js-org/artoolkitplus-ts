@@ -52,10 +52,8 @@
             }
 
             navigator.mediaDevices.getUserMedia(hint).then(function (stream) {
-                console.log(stream);
                 video.srcObject = stream;
                 video.addEventListener('loadedmetadata', function (e) {
-                    console.log(e);
                     video.play();
 
                     console.log('video', video, video.videoWidth, video.videoHeight);

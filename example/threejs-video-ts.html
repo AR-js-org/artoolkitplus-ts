@@ -62,10 +62,8 @@
             }
 
             navigator.mediaDevices.getUserMedia(hint).then(function (stream) {
-                console.log(stream);
                 video.srcObject = stream;
                 video.addEventListener('loadedmetadata', function (e) {
-                    console.log(e);
                     video.play();
 
                     console.log('video', video, video.videoWidth, video.videoHeight);
@@ -86,9 +84,8 @@
                                 // here we go, just two calls to find the camera pose
                                 console.log("PIXEL_FORMAT: ", ARToolKitPlus.PIXEL_FORMAT.PIXEL_FORMAT_LUM)
                                 var projMatrix = ar.getProjectionMatrix();
-                                
-                                process();
-                                setCameraMatrix(projMatrix)
+                                setCameraMatrix(projMatrix);
+                                process();                 
                             })
                     }
 
@@ -122,12 +119,12 @@
                 }
                 return out;
             }
+
             function isMobile() {
                 return /Android|mobile|iPad|iPhone/i.test(navigator.userAgent);
             }
 
             function setCameraMatrix(proj) {
-                //var proj = JSON.parse(msg.proj);
                 var proj = [];
                 var ratioW = pw / w;
                 var ratioH = ph / h;
@@ -189,7 +186,7 @@
                     conf = ar.getConfidence();
                     console.log("Marker confidence is: ", conf * 100, "%");
                     var matrix = ar.getModelViewMatrix();
-                    
+
                     console.log("Marker pose matrix is:", matrix);
                     artk.arglCameraViewRHf(matrix, glRHMatrix)
                     //setMatrix(root.matrix, matrix);
@@ -203,7 +200,7 @@
                     mesh.visible = false;
                 }
                 renderer.render(scene, camera);
-                
+
                 requestAnimationFrame(process);
             }
         }
