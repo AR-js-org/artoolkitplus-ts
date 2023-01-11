@@ -125,7 +125,8 @@
             }
 
             function setCameraMatrix(proj) {
-                var proj = [];
+                //var proj = [];
+                console.log(proj);
                 var ratioW = pw / w;
                 var ratioH = ph / h;
                 proj[0] *= ratioW;
@@ -137,6 +138,7 @@
                 proj[9] *= ratioH;
                 proj[13] *= ratioH;
                 setMatrix(camera.projectionMatrix, proj);
+                console.log(camera.projectionMatrix);
             }
 
             function setupThreejs() {
@@ -181,16 +183,18 @@
                 var image_data = ctx.getImageData(0, 0, width, height);
 
                 if (image_data.data) {
+                    
                     vec = ar.update(grayscale(image_data.data));
                     console.log("Marker found is: ", vec.get(0));
                     conf = ar.getConfidence();
+                   
                     console.log("Marker confidence is: ", conf * 100, "%");
                     var matrix = ar.getModelViewMatrix();
 
                     console.log("Marker pose matrix is:", matrix);
-                    artk.arglCameraViewRHf(matrix, glRHMatrix)
-                    //setMatrix(root.matrix, matrix);
-                    setMatrix(root.matrix, glRHMatrix);
+                    //artk.arglCameraViewRHf(matrix, glRHMatrix)
+                    setMatrix(root.matrix, matrix);
+                    //setMatrix(root.matrix, glRHMatrix);
                     console.log("root matrix: ", root.matrix.elements);
                     ctx.putImageData(image_data, 0, 0);
                 }
