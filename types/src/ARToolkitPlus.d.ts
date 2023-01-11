@@ -14,5 +14,6 @@ export default class ARToolkitPlus extends AbstractARToolkitPlus {
     getModelViewMatrix: () => number[];
     getMarkerPos: () => object;
     getMarkerVertexes: () => Array<number>;
+    arglCameraViewRHf(glMatrix: Float64Array, glRhMatrix?: Float64Array, scale?: number): Float64Array;
     private initTSM;
 }
