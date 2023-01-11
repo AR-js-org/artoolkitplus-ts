@@ -33,7 +33,8 @@
         var pw, ph;
         var w, h;
         var pscale, sscale;
-        var ar;
+        var ar, artk;
+        var glRHMatrix = new Float64Array(16)
         var videoSize;
 
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -81,11 +82,13 @@
                             tracker => {
                                 console.log(tracker);
                                 ar = tracker;
+                                artk = new ARToolKitPlus()
                                 // here we go, just two calls to find the camera pose
                                 console.log("PIXEL_FORMAT: ", ARToolKitPlus.PIXEL_FORMAT.PIXEL_FORMAT_LUM)
                                 var projMatrix = ar.getProjectionMatrix();
-                                setCameraMatrix(projMatrix)
+                                
                                 process();
+                                setCameraMatrix(projMatrix)
                             })
                     }
 
@@ -186,9 +189,11 @@
                     conf = ar.getConfidence();
                     console.log("Marker confidence is: ", conf * 100, "%");
                     var matrix = ar.getModelViewMatrix();
+                    
                     console.log("Marker pose matrix is:", matrix);
-
-                    setMatrix(root.matrix, matrix);
+                    artk.arglCameraViewRHf(matrix, glRHMatrix)
+                    //setMatrix(root.matrix, matrix);
+                    setMatrix(root.matrix, glRHMatrix);
                     console.log("root matrix: ", root.matrix.elements);
                     ctx.putImageData(image_data, 0, 0);
                 }
