@@ -1,4 +1,3 @@
-import { AbstractARToolkitPlus } from "./abstractions/AbstractARToolkitPlus";
 export declare class ARToolkitPlusLoader {
     private instance;
     private cameraCount;
@@ -21,16 +20,4 @@ export declare class ARToolkitPlusLoader {
      * @return {this} the this object
      */
     private converter;
-    /**
-     * Load the camera, this is an important and required step, Internally fill
-     * the ARParam struct.
-     * @param {string} urlOrData: the camera parameter, usually a path to a .dat file
-     * @return {number} a number, the internal id.
-     */
-    loadCalib(urlOrData: Uint8Array | string, useBCH: boolean, width: number, height: number, patternWidth: number): Promise<AbstractARToolkitPlus>;
-    /**
-     * Used internally by LoadCamera method
-     * @return {void}
-     */
-    private _storeDataFile;
 }

@@ -25,9 +25,6 @@ export class TrackerSingleMarkerLoader {
 
         this._decorate();
 
-        /*let scope = typeof window !== "undefined" ? window : global;
-        scope.artoolkitNFT = this;*/
-
         return this;
     }
 

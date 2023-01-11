@@ -1,19 +1,17 @@
 import { AbstractARToolkitPlus } from "./abstractions/AbstractARToolkitPlus";
-import { IImageObj } from "./abstractions/interfaces";
 import { ARToolkitPlusLoader } from "./ARToolkitPlusLoader";
 export default class ARToolkitPlus extends AbstractARToolkitPlus {
     private artoolkitplus: any;
-    //private tracker: any;
     static PIXEL_FORMAT: any;
     static MARKER_MODE: any;
     static UNDIST_MODE: any;
 
-    constructor(useBCH: boolean, cameraUrl: string, width: number, height: number, patternWidth: number) {
-        super(useBCH, cameraUrl, width, height, patternWidth)
+    constructor() {
+        super()
     }
 
-    static async initAR(useBCH: boolean, cameraUrl: string, width: number, height: number, patternWidth: number): Promise<AbstractARToolkitPlus> {
-        const artoolkitPlus = new ARToolkitPlus(useBCH, cameraUrl, width, height, patternWidth);
+    static async initAR(): Promise<AbstractARToolkitPlus> {
+        const artoolkitPlus = new ARToolkitPlus();
         return await artoolkitPlus.initARTKP();
     };
 
