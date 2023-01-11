@@ -1,23 +1,18 @@
 import ARtoolKitPlus from "../build/artoolkitplus_em_ES6"
+import { AbstractTrackerSingleMarker } from "./abstractions/AbstractTrackerSingleMarker";
 import Utils from "./Utils";
-import { AbstractARToolkitPlus } from "./abstractions/AbstractARToolkitPlus";
-import packageJson from "../package.json";
-const { version } = packageJson;
 
-
-export class ARToolkitPlusLoader {
+export class TrackerSingleMarkerLoader {
     private instance: any;
     private cameraCount: number;
-    private version: string;
+    //private version: string;
     constructor() {
         // reference to WASM module
         this.instance;
         this.cameraCount = 0;
-        this.version = version;
-        console.info("ARToolkitPlus ", this.version);
     }
 
-    // ---------------------------------------------------------------------------
+     // ---------------------------------------------------------------------------
 
     // initialization
     /**
@@ -45,11 +40,7 @@ export class ARToolkitPlusLoader {
     private _decorate(): void {
         // add delegate methods
         [
-            "vector_int",
-            "PIXEL_FORMAT",
-            "UNDIST_MODE",
-            "MARKER_MODE",
-           // "TrackerSingleMarker",
+            "TrackerSingleMarker",
         ].forEach((method: string) => {
             this.converter()[method] = this.instance[method];
         });
@@ -72,7 +63,7 @@ export class ARToolkitPlusLoader {
      * @param {string} urlOrData: the camera parameter, usually a path to a .dat file
      * @return {number} a number, the internal id.
      */
-    public async loadCalib(urlOrData: Uint8Array | string, useBCH: boolean, width: number, height: number, patternWidth: number): Promise<AbstractARToolkitPlus> {
+    public async loadCalib(urlOrData: Uint8Array | string, useBCH: boolean, width: number, height: number, patternWidth: number): Promise<AbstractTrackerSingleMarker> {
         const target = "/load_calib_" + this.cameraCount++;
 
         let data: Uint8Array;

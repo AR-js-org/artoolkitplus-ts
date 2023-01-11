@@ -1,5 +1,5 @@
 import { IImageObj } from './interfaces'
-export abstract class AbstractARToolkitPlus {
+export abstract class AbstractTrackerSingleMarker {
     protected cameraUrl: string;
     protected useBCH: boolean;
     protected width: number;
@@ -11,6 +11,9 @@ export abstract class AbstractARToolkitPlus {
         this.width = width;
         this.height = height;
         this.patternWidth = patternWidth;
-    }
-    abstract arglCameraViewRHf(glMatrix: Float64Array, glRhMatrix?: Float64Array, scale?: number): Float64Array;
+     }
+    abstract setup: (cameraUrl: string) => void;
+    abstract update: (image: IImageObj) => void;
+    abstract getConfidence: () => number;
+    abstract getModelViewMatrix: () => Array<number>;
 }
