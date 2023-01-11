@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A simple example with artoolkitplus_em and new dist lib</title>
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+    <video id="video" autoplay loop muted playsinline></video>
+    <canvas id="canvas"></canvas>
+    <canvas id="canvas_draw"></canvas>
+    <script src="../dist/ARToolKitPlus.js"></script>
+    <script src="js/three.min.js"></script>
+
+    <script>
+
+        var canvas = document.getElementById('canvas');
+        var canvas_draw = document.getElementById('canvas_draw');
+        var overlayCanvas = null;
+        var ctx = canvas.getContext('2d');
+        var width = 640, height = 480;
+        var canvasWidth;
+        var canvasHeight;
+        var vec, conf;
+        var renderer, scene, camera, root, mesh;
+        var vw, vh;
+        var sw, sh;
+        var pw, ph;
+        var w, h;
+        var pscale, sscale;
+        var ar;
+        var videoSize;
+
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            var hint = {
+                audio: false,
+                video: true
+            };
+            if (window.innerWidth < 800) {
+                var width = (window.innerWidth < window.innerHeight) ? 240 : 360;
+                var height = (window.innerWidth < window.innerHeight) ? 360 : 240;
+
+                var aspectRatio = window.innerWidth / window.innerHeight;
+
+                console.log(width, height);
+
+                hint = {
+                    audio: false,
+                    video: {
+                        facingMode: 'environment',
+                        width: { min: width, max: width }
+                    },
+                };
+
+                console.log(hint);
+            }
+
+            navigator.mediaDevices.getUserMedia(hint).then(function (stream) {
+                console.log(stream);
+                video.srcObject = stream;
+                video.addEventListener('loadedmetadata', function (e) {
+                    console.log(e);
+                    video.play();
+
+                    console.log('video', video, video.videoWidth, video.videoHeight);
+                    videoSize = video.videoWidth * video.videoHeight;
+
+                    canvasWidth = video.videoWidth;
+                    canvasHeight = video.videoHeight;
+                    canvas.width = canvasWidth;
+                    canvas.height = canvasHeight;
+                    setupThreejs()
+
+                    if (video) {
+                        ARToolKitPlus.initTrackerSingleMarker(false, "data/PGR_M12x0.5_2.5mm.cal", width, height, 80).then(
+                            tracker => {
+                                console.log(tracker);
+                                ar = tracker;
+                                // here we go, just two calls to find the camera pose
+                                console.log("PIXEL_FORMAT: ", ARToolKitPlus.PIXEL_FORMAT.PIXEL_FORMAT_LUM)
+                                var projMatrix = ar.getProjectionMatrix();
+                                setCameraMatrix(projMatrix)
+                                process();
+                            })
+                    }
+
+                });
+            });
+
+            var setMatrix = function (matrix, value) {
+                var array = [];
+                for (var key in value) {
+                    array[key] = value[key];
+                }
+                if (typeof matrix.elements.set === "function") {
+                    matrix.elements.set(array);
+                } else {
+                    matrix.elements = [].slice.call(array);
+                }
+            };
+
+            function grayscale(data) {
+                // Code taken from jsartoolkit5 repository https://github.com/webarkit/jsartoolkit5/blob/master/js/artoolkit.api.js
+                let out = [];
+
+                var q = 0;
+                // Create luma from video data assuming Pixelformat AR_PIXEL_FORMAT_RGBA (ARToolKitJS.cpp L: 43)
+
+                for (var p = 0; p < videoSize; p++) {
+                    var r = data[q + 0], g = data[q + 1], b = data[q + 2];
+                    // videoLuma[p] = (r+r+b+g+g+g)/6;         // https://stackoverflow.com/a/596241/5843642
+                    out[p] = (r + r + r + b + g + g + g + g) >> 3;
+                    q += 4;
+                }
+                return out;
+            }
+            function isMobile() {
+                return /Android|mobile|iPad|iPhone/i.test(navigator.userAgent);
+            }
+
+            function setCameraMatrix(proj) {
+                //var proj = JSON.parse(msg.proj);
+                var proj = [];
+                var ratioW = pw / w;
+                var ratioH = ph / h;
+                proj[0] *= ratioW;
+                proj[4] *= ratioW;
+                proj[8] *= ratioW;
+                proj[12] *= ratioW;
+                proj[1] *= ratioH;
+                proj[5] *= ratioH;
+                proj[9] *= ratioH;
+                proj[13] *= ratioH;
+                setMatrix(camera.projectionMatrix, proj);
+            }
+
+            function setupThreejs() {
+                vw = video.videoWidth;
+                vh = video.videoHeight;
+
+                pscale = 320 / Math.max(vw, vh / 3 * 4);
+                sscale = isMobile() ? window.outerWidth / width : 1;
+
+                sw = vw * sscale;
+                sh = vh * sscale;
+                w = vw * pscale;
+                h = vh * pscale;
+                pw = Math.max(w, h / 3 * 4);
+                ph = Math.max(h, w / 4 * 3);
+
+                renderer = new THREE.WebGLRenderer({ canvas: canvas_draw, alpha: true, antialias: true });
+                renderer.setPixelRatio(window.devicePixelRatio);
+                camera = new THREE.Camera();
+                camera.matrixAutoUpdate = false;
+
+                scene = new THREE.Scene();
+
+                mesh = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.5, 8, 8),
+                    new THREE.MeshNormalMaterial()
+                );
+                root = new THREE.Object3D();
+                scene.add(root);
+
+                mesh.material.flatShading;
+                mesh.scale.set(200, 200, 200);
+
+                root.matrixAutoUpdate = false;
+                root.add(mesh);
+
+                renderer.setSize(sw, sh);
+            }
+
+            function process() {
+                ctx.drawImage(video, 0, 0, width, height);
+                var image_data = ctx.getImageData(0, 0, width, height);
+
+                if (image_data.data) {
+                    vec = ar.update(grayscale(image_data.data));
+                    console.log("Marker found is: ", vec.get(0));
+                    conf = ar.getConfidence();
+                    console.log("Marker confidence is: ", conf * 100, "%");
+                    var matrix = ar.getModelViewMatrix();
+                    console.log("Marker pose matrix is:", matrix);
+
+                    setMatrix(root.matrix, matrix);
+                    console.log("root matrix: ", root.matrix.elements);
+                    ctx.putImageData(image_data, 0, 0);
+                }
+                if (conf > .7) {
+                    mesh.visible = true;
+                } else {
+                    mesh.visible = false;
+                }
+                renderer.render(scene, camera);
+                
+                requestAnimationFrame(process);
+            }
+        }
+
+    </script>
+</body>
+
+</html>
