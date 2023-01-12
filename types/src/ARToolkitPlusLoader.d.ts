@@ -1,6 +1,5 @@
 export declare class ARToolkitPlusLoader {
     private instance;
-    private cameraCount;
     private version;
     constructor();
     /**

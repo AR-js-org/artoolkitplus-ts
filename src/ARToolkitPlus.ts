@@ -1,6 +1,6 @@
-import { AbstractARToolkitPlus } from "./abstractions/AbstractARToolkitPlus";
+import { AbstractARToolKitPlus } from "./abstractions/AbstractARToolKitPlus";
 import { ARToolkitPlusLoader } from "./ARToolkitPlusLoader";
-export default class ARToolkitPlus extends AbstractARToolkitPlus {
+export default class ARToolKitPlus extends AbstractARToolKitPlus {
     private artoolkitplus: any;
     static PIXEL_FORMAT: any;
     static MARKER_MODE: any;
@@ -10,8 +10,8 @@ export default class ARToolkitPlus extends AbstractARToolkitPlus {
         super()
     }
 
-    static async initAR(): Promise<AbstractARToolkitPlus> {
-        const artoolkitPlus = new ARToolkitPlus();
+    static async initAR(): Promise<AbstractARToolKitPlus> {
+        const artoolkitPlus = new ARToolKitPlus();
         return await artoolkitPlus.initARTKP();
     };
 
@@ -63,9 +63,9 @@ export default class ARToolkitPlus extends AbstractARToolkitPlus {
     private async initARTKP() {
         this.artoolkitplus = await new ARToolkitPlusLoader().init();
 
-        ARToolkitPlus.MARKER_MODE = this.artoolkitplus.MARKER_MODE;
-        ARToolkitPlus.PIXEL_FORMAT = this.artoolkitplus.PIXEL_FORMAT;
-        ARToolkitPlus.UNDIST_MODE = this.artoolkitplus.UNDIST_MODE;
+        ARToolKitPlus.MARKER_MODE = this.artoolkitplus.MARKER_MODE;
+        ARToolKitPlus.PIXEL_FORMAT = this.artoolkitplus.PIXEL_FORMAT;
+        ARToolKitPlus.UNDIST_MODE = this.artoolkitplus.UNDIST_MODE;
 
         return this;
     }

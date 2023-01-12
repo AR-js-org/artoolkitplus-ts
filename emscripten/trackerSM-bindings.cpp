@@ -2,7 +2,7 @@
 
 using namespace emscripten;
 
-EMSCRIPTEN_BINDINGS(artoolkitplus) {
+EMSCRIPTEN_BINDINGS(trackerSM) {
   register_vector<int>("vector_int");
 
   enum_<PIXEL_FORMAT>("PIXEL_FORMAT")

@@ -1,4 +1,4 @@
-export declare abstract class AbstractARToolkitPlus {
+export declare abstract class AbstractARToolKitPlus {
     static PIXEL_FORMAT: any;
     static MARKER_MODE: any;
     static UNDIST_MODE: any;

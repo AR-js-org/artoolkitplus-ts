@@ -1,7 +1,7 @@
-import ARToolkitPlus from "./ARToolkitPlus";
+import ARToolKitPlus from "./ARToolKitPlus";
 import TrackerSingleMarker from "./TrackerSingleMarker";
 declare const _default: {
-    ARToolkitPlus: typeof ARToolkitPlus;
+    ARToolKitPlus: typeof ARToolKitPlus;
     TrackerSingleMarker: typeof TrackerSingleMarker;
 };
 export default _default;

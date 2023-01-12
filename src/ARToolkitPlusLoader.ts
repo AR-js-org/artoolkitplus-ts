@@ -1,18 +1,14 @@
 import ARtoolKitPlus from "../build/artoolkitplus_em_ES6"
-import Utils from "./Utils";
-import { AbstractARToolkitPlus } from "./abstractions/AbstractARToolkitPlus";
 import packageJson from "../package.json";
 const { version } = packageJson;
 
 
 export class ARToolkitPlusLoader {
     private instance: any;
-    private cameraCount: number;
     private version: string;
     constructor() {
         // reference to WASM module
         this.instance;
-        this.cameraCount = 0;
         this.version = version;
         console.info("ARToolkitPlus ", this.version);
     }
@@ -42,7 +38,6 @@ export class ARToolkitPlusLoader {
     private _decorate(): void {
         // add delegate methods
         [
-            "vector_int",
             "PIXEL_FORMAT",
             "UNDIST_MODE",
             "MARKER_MODE",

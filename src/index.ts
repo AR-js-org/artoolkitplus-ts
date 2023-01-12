@@ -1,6 +1,6 @@
-import ARToolkitPlus from "./ARToolkitPlus";
+import ARToolKitPlus from "./ARToolKitPlus";
 import TrackerSingleMarker from "./TrackerSingleMarker";
 
 export default {
-    ARToolkitPlus, TrackerSingleMarker
+    ARToolKitPlus, TrackerSingleMarker
 }

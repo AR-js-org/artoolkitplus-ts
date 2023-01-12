@@ -76,13 +76,13 @@
                     setupThreejs()
 
                     if (video) {
-                        ARToolKitPlus.ARToolkitPlus.initAR().then((ar) => {
+                        ARToolKitPlus.ARToolKitPlus.initAR().then((ar) => {
                             ARToolKitPlus.TrackerSingleMarker.initTrackerSingleMarker(false, "data/PGR_M12x0.5_2.5mm.cal", width, height, 80).then(
                                 tracker => {
                                     console.log(tracker);
                                     trk = tracker;
                                     // Display the Pixel Format in use, just to test the static variables...
-                                    console.log("PIXEL_FORMAT: ", ARToolKitPlus.ARToolkitPlus.PIXEL_FORMAT.PIXEL_FORMAT_LUM);
+                                    console.log("PIXEL_FORMAT: ", ARToolKitPlus.ARToolKitPlus.PIXEL_FORMAT.PIXEL_FORMAT_LUM);
                                     // here we go, just two calls to find the camera pose
                                     var projMatrix = trk.getProjectionMatrix();
                                     setCameraMatrix(projMatrix);

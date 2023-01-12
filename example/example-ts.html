@@ -12,7 +12,7 @@
     <script src="../dist/ARToolKitPlus.js"></script>
 
     <script>
-        ARToolKitPlus.ARToolkitPlus.initAR().then((ar) => {
+        ARToolKitPlus.ARToolKitPlus.initAR().then((ar) => {
             console.log(ar);
             ARToolKitPlus.TrackerSingleMarker.initTrackerSingleMarker(false, "data/PGR_M12x0.5_2.5mm.cal", 320, 240, 80).then(
                 tracker => {
@@ -27,7 +27,7 @@
                         .then(buff => {
                             let buffer = new Uint8Array(buff)
                             // Display the Pixel Format in use, just to test the static variables...
-                            console.log("PIXEL_FORMAT: ", ARToolKitPlus.ARToolkitPlus.PIXEL_FORMAT.PIXEL_FORMAT_LUM)
+                            console.log("PIXEL_FORMAT: ", ARToolKitPlus.ARToolKitPlus.PIXEL_FORMAT.PIXEL_FORMAT_LUM)
                             vec = tracker.update(buffer);
                             console.log("Marker found is: ", vec.get(0));
                             var conf = tracker.getConfidence();
