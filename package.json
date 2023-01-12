@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Typescript ARToolKitPlus port thanks to Emscripten",
   "main": "dist/ARToolKitPlus.js",
-  "types": "types/src/ARToolKitPlus.d.ts",
+  "types": "types/src/index.d.ts",
   "directories": {
     "example": "example"
   },
