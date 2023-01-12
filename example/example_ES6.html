@@ -11,8 +11,10 @@
 <body>
     <script type="module">
         import ARtoolKitPlus from '../build/artoolkitplus_em_ES6_debug.js'
+        import TrackerSingleMarker from '../build/trackerSM_ES6_debug.js'
         import { loadCalib } from './loader_ES6.js'
         const artoolkitplus = await ARtoolKitPlus()
+        const trk = await TrackerSingleMarker()
 
             loadCalib("data/PGR_M12x0.5_2.5mm.cal", function(tracker){
                 fetch("data/image_320_240_8_marker_id_simple_nr031.raw")
@@ -24,7 +26,7 @@
                     })
                     .then(buff => {
                         let buffer = new Uint8Array(buff)
-                        var vec = new artoolkitplus.vector_int();
+                        var vec = new trk.vector_int();
                         // here we go, just two calls to find the camera pose
                         vec = tracker.update(buffer);
                         console.log("Marker found is: ", vec.get(0));
@@ -33,7 +35,7 @@
                         var matrix = tracker.getModelViewMatrix();
                         console.log("Marker pose matrix is:", matrix);
                         // changing the Pixel Format only for testing...
-                        tracker.setPixelFormat(artoolkitplus.PIXEL_FORMAT.PIXEL_FORMAT_RGB)
+                        //tracker.setPixelFormat(artoolkitplus.PIXEL_FORMAT.PIXEL_FORMAT_RGB)
                         console.log("Pixel Format: ", tracker.getPixelFormat())
                     })
 

@@ -46,7 +46,6 @@ export class ARToolkitPlusLoader {
             "PIXEL_FORMAT",
             "UNDIST_MODE",
             "MARKER_MODE",
-           // "TrackerSingleMarker",
         ].forEach((method: string) => {
             this.converter()[method] = this.instance[method];
         });

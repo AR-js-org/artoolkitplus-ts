@@ -26,11 +26,9 @@
                         })
                         .then(buff => {
                             let buffer = new Uint8Array(buff)
-                            // var vec = new Module.vector_int();
-                            // here we go, just two calls to find the camera pose
+                            // Display the Pixel Format in use, just to test the static variables...
                             console.log("PIXEL_FORMAT: ", ARToolKitPlus.ARToolkitPlus.PIXEL_FORMAT.PIXEL_FORMAT_LUM)
                             vec = tracker.update(buffer);
-                            console.log(vec.size());
                             console.log("Marker found is: ", vec.get(0));
                             var conf = tracker.getConfidence();
                             console.log("Marker confidence is: ", conf * 100, "%");

@@ -1,12 +1,14 @@
 var file_count = 0;
 import ARtoolKitPlus from '../build/artoolkitplus_em_ES6_debug.js'
+import TrackerSingleMarker from '../build/trackerSM_ES6_debug.js'
+const trk = await TrackerSingleMarker()
 const artoolkitplus = await ARtoolKitPlus()
 
 let t;
 export function loadCalib(url, callback, errorCallback) {
   var filename = '/load_calib_' + file_count++ + '.cal';
   var writeCallback = function () {
-    t = new artoolkitplus.TrackerSingleMarker(false, 320, 240, 80);
+    t = new trk.TrackerSingleMarker(false, 320, 240, 80);
     if (!t.setup) {
       if (callback) callback(id); setTimeout(writeCallback, 10);
     } else {
@@ -50,6 +52,6 @@ function writeStringToFS(target, string, callback) {
 }
 
 function writeByteArrayToFS(target, byteArray, callback) {
-  artoolkitplus.FS.writeFile(target, byteArray, { encoding: 'binary' });
+  trk.FS.writeFile(target, byteArray, { encoding: 'binary' });
   callback(byteArray);
 }

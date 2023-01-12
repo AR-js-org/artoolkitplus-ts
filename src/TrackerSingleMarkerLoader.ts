@@ -1,18 +1,17 @@
-import ARtoolKitPlus from "../build/artoolkitplus_em_ES6"
+import TrackerSM from "../build/trackerSM_ES6"
 import { AbstractTrackerSingleMarker } from "./abstractions/AbstractTrackerSingleMarker";
 import Utils from "./Utils";
 
 export class TrackerSingleMarkerLoader {
     private instance: any;
     private cameraCount: number;
-    //private version: string;
     constructor() {
         // reference to WASM module
         this.instance;
         this.cameraCount = 0;
     }
 
-     // ---------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
 
     // initialization
     /**
@@ -21,7 +20,7 @@ export class TrackerSingleMarkerLoader {
      * @return {object} the this object
      */
     public async init() {
-        this.instance = await ARtoolKitPlus();
+        this.instance = await TrackerSM();
 
         this._decorate();
 
