@@ -11,8 +11,8 @@
 <body>
 
     <script type="module">
-       import * as ARToolkitPlus from '../dist/ARToolKitPlus.js'
-       ARToolKitPlus.ARToolkitPlus.initAR().then((ar) => {
+       import  '../dist/ARToolKitPlus.js'
+       ARToolKitPlus.ARToolKitPlus.initAR().then((ar) => {
             console.log(ar);
             ARToolKitPlus.TrackerSingleMarker.initTrackerSingleMarker(false, "data/PGR_M12x0.5_2.5mm.cal", 320, 240, 80).then(
                 tracker => {
@@ -28,7 +28,7 @@
                             let buffer = new Uint8Array(buff)
                             // var vec = new Module.vector_int();
                             // here we go, just two calls to find the camera pose
-                            console.log("PIXEL_FORMAT: ", ARToolKitPlus.ARToolkitPlus.PIXEL_FORMAT.PIXEL_FORMAT_LUM)
+                            console.log("PIXEL_FORMAT: ", ARToolKitPlus.ARToolKitPlus.PIXEL_FORMAT.PIXEL_FORMAT_LUM)
                             var vec = tracker.update(buffer);
                             console.log(vec.size());
                             console.log("Marker found is: ", vec.get(0));
