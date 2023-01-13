@@ -1,5 +1,5 @@
 # artoolkitplus-ts
-ARToolKitPlus library ported to the web thanks to Emscripten compiler. Things aer evolving faster and code can be change frequently, infact is a WIP.
+[ARToolKitPlus](https://github.com/paroj/artoolkitplus) library ported to the web thanks to Emscripten compiler. Things are evolving faster and code can change frequently, infact is a WIP.
 
 ## Build libs
 There are one Emscripten lib type that follow the ES6 standard. For every libs there is the debug version, useful when you are developing.
