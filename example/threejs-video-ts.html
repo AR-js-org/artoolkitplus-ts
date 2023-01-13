@@ -33,7 +33,7 @@
         var pw, ph;
         var w, h;
         var pscale, sscale;
-        var ar, artk;
+        var trk;
         var glRHMatrix = new Float64Array(16)
         var videoSize;
 
@@ -76,17 +76,19 @@
                     setupThreejs()
 
                     if (video) {
-                        ARToolKitPlus.initTrackerSingleMarker(false, "data/PGR_M12x0.5_2.5mm.cal", width, height, 80).then(
-                            tracker => {
-                                console.log(tracker);
-                                ar = tracker;
-                                artk = new ARToolKitPlus()
-                                // here we go, just two calls to find the camera pose
-                                console.log("PIXEL_FORMAT: ", ARToolKitPlus.PIXEL_FORMAT.PIXEL_FORMAT_LUM)
-                                var projMatrix = ar.getProjectionMatrix();
-                                setCameraMatrix(projMatrix);
-                                process();
-                            })
+                        ARToolKitPlus.ARToolKitPlus.initAR().then((ar) => {
+                            ARToolKitPlus.TrackerSingleMarker.initTrackerSingleMarker(false, "data/PGR_M12x0.5_2.5mm.cal", width, height, 80).then(
+                                tracker => {
+                                    console.log(tracker);
+                                    trk = tracker;
+                                    // Display the Pixel Format in use, just to test the static variables...
+                                    console.log("PIXEL_FORMAT: ", ARToolKitPlus.ARToolKitPlus.PIXEL_FORMAT.PIXEL_FORMAT_LUM);
+                                    // here we go, just two calls to find the camera pose
+                                    var projMatrix = trk.getProjectionMatrix();
+                                    setCameraMatrix(projMatrix);
+                                    process();
+                                })
+                        })
                     }
 
                 });
@@ -180,11 +182,11 @@
                 var image_data = ctx.getImageData(0, 0, width, height);
 
                 if (image_data.data) {
-                    vec = ar.update(grayscale(image_data.data));
+                    vec = trk.update(grayscale(image_data.data));
                     console.log("Marker found is: ", vec.get(0));
-                    conf = ar.getConfidence();
+                    conf = trk.getConfidence();
                     console.log("Marker confidence is: ", conf * 100, "%");
-                    var matrix = ar.getModelViewMatrix();
+                    var matrix = trk.getModelViewMatrix();
                     console.log("Marker pose matrix is:", matrix);
                     setMatrix(root.matrix, matrix);
                     ctx.putImageData(image_data, 0, 0);

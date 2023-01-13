@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A simple example with artoolkitplus_em and new dist lib</title>
+</head>
+
+<body>
+
+    <script type="module">
+       import  '../dist/ARToolKitPlus.js'
+       ARToolKitPlus.ARToolKitPlus.initAR().then((ar) => {
+            console.log(ar);
+            ARToolKitPlus.TrackerSingleMarker.initTrackerSingleMarker(false, "data/PGR_M12x0.5_2.5mm.cal", 320, 240, 80).then(
+                tracker => {
+                    console.log(tracker);
+                    fetch("data/image_320_240_8_marker_id_simple_nr031.raw")
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not OK');
+                            }
+                            return response.arrayBuffer();
+                        })
+                        .then(buff => {
+                            let buffer = new Uint8Array(buff)
+                            // var vec = new Module.vector_int();
+                            // here we go, just two calls to find the camera pose
+                            console.log("PIXEL_FORMAT: ", ARToolKitPlus.ARToolKitPlus.PIXEL_FORMAT.PIXEL_FORMAT_LUM)
+                            var vec = tracker.update(buffer);
+                            console.log(vec.size());
+                            console.log("Marker found is: ", vec.get(0));
+                            var conf = tracker.getConfidence();
+                            console.log("Marker confidence is: ", conf * 100, "%");
+                            var matrix = tracker.getModelViewMatrix();
+                            console.log("Marker pose matrix is:", matrix);
+                        })
+
+                })
+        })
+
+       // })
+    </script>
+</body>
+
+</html>
