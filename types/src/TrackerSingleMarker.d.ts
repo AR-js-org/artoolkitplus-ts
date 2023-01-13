@@ -1,5 +1,5 @@
 import { AbstractTrackerSingleMarker } from "./abstractions/AbstractTrackerSingleMarker";
-import { IImageObj } from "./abstractions/interfaces";
+import { IImageObj } from "./abstractions/CommonInterfaces";
 export default class TrackerSingleMarker extends AbstractTrackerSingleMarker {
     private tracker;
     constructor(useBCH: boolean, cameraUrl: string, width: number, height: number, patternWidth: number);

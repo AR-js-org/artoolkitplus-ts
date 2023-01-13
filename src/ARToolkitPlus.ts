@@ -1,20 +1,42 @@
 import { AbstractARToolKitPlus } from "./abstractions/AbstractARToolKitPlus";
-import { ARToolkitPlusLoader } from "./ARToolkitPlusLoader";
+import { ARToolKitPlusLoader } from "./ARToolKitPlusLoader";
 export default class ARToolKitPlus extends AbstractARToolKitPlus {
     private artoolkitplus: any;
     static PIXEL_FORMAT: any;
     static MARKER_MODE: any;
     static UNDIST_MODE: any;
 
+    /**
+     * Default constructor used internally in the **initAR** static method.
+     */
     constructor() {
         super()
     }
 
+    /**
+     * Main static method to init the ARToolKitPlus instance. 
+     * Start from this method your main app, example:
+     * ```js
+     * import ARToolKitPlus from '../dist/ARToolKitPlus.js'
+     * 
+     * ARToolKitPlus.initAR().then((ar) => {
+     *  // your code here...
+     * })
+     * ```
+     * @returns {this}
+     */
     static async initAR(): Promise<AbstractARToolKitPlus> {
         const artoolkitPlus = new ARToolKitPlus();
         return await artoolkitPlus.initARTKP();
     };
 
+    /**
+     * Convert Model View Matrix to Right Hand Matrix.
+     * @param glMatrix {Float64Array} 
+     * @param glRhMatrix {Float64Array}
+     * @param scale {number}
+     * @returns {Float64Array} glRhMatrix.
+     */
     arglCameraViewRHf(
         glMatrix: Float64Array,
         glRhMatrix?: Float64Array,
@@ -61,7 +83,7 @@ export default class ARToolKitPlus extends AbstractARToolKitPlus {
     }
 
     private async initARTKP() {
-        this.artoolkitplus = await new ARToolkitPlusLoader().init();
+        this.artoolkitplus = await new ARToolKitPlusLoader().init();
 
         ARToolKitPlus.MARKER_MODE = this.artoolkitplus.MARKER_MODE;
         ARToolKitPlus.PIXEL_FORMAT = this.artoolkitplus.PIXEL_FORMAT;

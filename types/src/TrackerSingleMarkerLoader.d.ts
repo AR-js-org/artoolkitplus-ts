@@ -2,16 +2,18 @@ import { AbstractTrackerSingleMarker } from "./abstractions/AbstractTrackerSingl
 export declare class TrackerSingleMarkerLoader {
     private instance;
     private cameraCount;
+    /**
+     * Deafult constructor.
+     */
     constructor();
     /**
-     * Init the class injecting the Wasm Module, link the instanced methods and
-     * create a global artoolkitNFT variable.
+     * Init the class injecting the Wasm Module, link the instanced methods.
      * @return {object} the this object
      */
     init(): Promise<this>;
     /**
-     * Used internally to link the instance in the ARToolkitPlusLoader to the
-     * ARtoolKitPlus internal methods.
+     * Used internally to link the instance in the ARToolKitPlusLoader to the
+     * ARToolKitPlus internal methods.
      * @return {void}
      */
     private _decorate;
@@ -21,10 +23,10 @@ export declare class TrackerSingleMarkerLoader {
      */
     private converter;
     /**
-     * Load the camera, this is an important and required step, Internally fill
-     * the ARParam struct.
-     * @param {string} urlOrData: the camera parameter, usually a path to a .dat file
-     * @return {number} a number, the internal id.
+     * Load the camera, this is an important and required step. Internally fill
+     * the Camera class (old ARToolKit ARParam struct).
+     * @param {string} urlOrData: the camera parameter, usually a path to a .cal file
+     * @return {Promise} the tracker.
      */
     loadCalib(urlOrData: Uint8Array | string, useBCH: boolean, width: number, height: number, patternWidth: number): Promise<AbstractTrackerSingleMarker>;
     /**

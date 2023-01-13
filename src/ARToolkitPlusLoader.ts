@@ -1,28 +1,31 @@
-import ARtoolKitPlus from "../build/artoolkitplus_em_ES6"
+import ARToolKitPlus from "../build/artoolkitplus_em_ES6"
 import packageJson from "../package.json";
 const { version } = packageJson;
 
 
-export class ARToolkitPlusLoader {
+export class ARToolKitPlusLoader {
     private instance: any;
     private version: string;
+    /**
+     * Default constructor, print in the console the ARToolKitPlus version, example:
+     * ```ARToolKitPlus 0.2.0```
+     */
     constructor() {
         // reference to WASM module
         this.instance;
         this.version = version;
-        console.info("ARToolkitPlus ", this.version);
+        console.info("ARToolKitPlus ", this.version);
     }
 
     // ---------------------------------------------------------------------------
 
     // initialization
     /**
-     * Init the class injecting the Wasm Module, link the instanced methods and
-     * create a global artoolkitNFT variable.
+     * Init the class injecting the Wasm Module and link the instanced method.
      * @return {object} the this object
      */
     public async init() {
-        this.instance = await ARtoolKitPlus();
+        this.instance = await ARToolKitPlus();
 
         this._decorate();
 
@@ -31,8 +34,8 @@ export class ARToolkitPlusLoader {
 
     // private methods
     /**
-     * Used internally to link the instance in the ARToolkitPlusLoader to the
-     * ARtoolKitPlus internal methods.
+     * Used internally to link the instance in the ARToolKitPlusLoader to the
+     * ARToolKitPlus internal methods.
      * @return {void}
      */
     private _decorate(): void {

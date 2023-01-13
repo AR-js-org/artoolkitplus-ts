@@ -1,4 +1,4 @@
-import { IImageObj } from './interfaces'
+import { IImageObj } from './CommonInterfaces'
 export abstract class AbstractTrackerSingleMarker {
     protected cameraUrl: string;
     protected useBCH: boolean;

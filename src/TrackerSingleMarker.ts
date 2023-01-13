@@ -1,5 +1,5 @@
 import { AbstractTrackerSingleMarker } from "./abstractions/AbstractTrackerSingleMarker";
-import { IImageObj } from "./abstractions/interfaces";
+import { IImageObj } from "./abstractions/CommonInterfaces";
 import { TrackerSingleMarkerLoader } from "./TrackerSingleMarkerLoader";
 
 export default class TrackerSingleMarker extends AbstractTrackerSingleMarker {
