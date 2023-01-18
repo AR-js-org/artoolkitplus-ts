@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A simple example with artoolkitplus_em_ES6</title>
+</head>
+
+<body>
+    <script type="module">
+        import ARtoolKitPlus from '../build/artoolkitplus_em_ES6_debug.js'
+        import TrackerMultiMarker from '../build/trackerMM_ES6.js'
+        import { loadCalib } from './loader_TMM_ES6.js'
+        const artoolkitplus = await ARtoolKitPlus()
+        const trk = await TrackerMultiMarker()
+
+            await loadCalib("data/PGR_M12x0.5_2.5mm.cal", "data/markerboard_480-499.cfg", function(tracker){
+                fetch("data/image_320_240_8_marker_id_simple_nr031.raw")
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not OK');
+                        }
+                        return response.arrayBuffer();
+                    })
+                    .then(buff => {
+                        let buffer = new Uint8Array(buff)
+                        var vec = new trk.vector_int();
+                        // here we go, just two calls to find the camera pose
+                        vec = tracker.update(buffer);
+                        console.log("Marker found is: ", vec.get(0));
+                        var conf = tracker.getConfidence();
+                        console.log("Marker confidence is: ", conf * 100,"%");
+                        var matrix = tracker.getModelViewMatrix();
+                        console.log("Marker pose matrix is:", matrix);
+                        // changing the Pixel Format only for testing...
+                        //tracker.setPixelFormat(artoolkitplus.PIXEL_FORMAT.PIXEL_FORMAT_RGB)
+                        console.log("Pixel Format: ", tracker.getPixelFormat())
+                    })
+
+            }, function(err) {console.log(err);})
+
+    </script>
+</body>
+
+</html>

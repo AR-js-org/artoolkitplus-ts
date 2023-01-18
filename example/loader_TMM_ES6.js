@@ -2,10 +2,9 @@ var file_count = 0;
 import ARtoolKitPlus from '../build/artoolkitplus_em_ES6_debug.js'
 import TrackerMultiMarker from '../build/trackerMM_ES6.js'
 const trk = await TrackerMultiMarker()
-const artoolkitplus = await ARtoolKitPlus()
 
 let t;
-export function loadCalib(url, cfg, callback, errorCallback) {
+export async function loadCalib(url, cfg, callback, errorCallback) {
   var count = file_count++;
   var filename = '/load_calib_' + count + '.cal';
   var config = '/load_config_' + count + ".cfg";
@@ -16,7 +15,7 @@ export function loadCalib(url, cfg, callback, errorCallback) {
     if (!t.setup) {
       if (callback) callback(id); setTimeout(writeCallback, 10);
     } else {
-      if(t.setup(filename, config,  8, 6, 6, 6, 0)) {
+      if (t.setup(filename, config, 8, 6, 6, 6, 0)) {
         console.log("Init TrackerMultiMarker");
       };
       if (callback) callback(t);
@@ -28,20 +27,54 @@ export function loadCalib(url, cfg, callback, errorCallback) {
     writeStringToFS(filename, url, writeCallback);
   } else {
 
-   Promise.all(
-      [
-        new Promise((resolve, reject)=> { resolve(url)}), 
-        new Promise((resolve, reject)=> { resolve(cfg)})
-      ]
-      ).then( f => {
-        console.log(f);
-        t = new trk.TrackerMultiMarker(false, 320, 240, 80);
-        console.log(filename);
-        console.log(config);
-        t.setup(url, cfg, 8, 6, 6, 6, 0)
-       })
+    const storeCalib = function (url, target) {
+      console.log(url);
+      fetchData(url, target);
+      return target;
+    };
+
+    const storeConfig = function (cfg, target) {
+      console.log(cfg);
+      fetchData(cfg, target);
+      return target;
+    };
+
+    const promises = [
+      new Promise((resolve, reject) => resolve(storeCalib(url, filename))),
+      new Promise((resolve, reject) => resolve(storeConfig(cfg, config)))
+    ];
+
+    Promise.all(promises).then(
+      result => { 
+      console.log(result);
+      t = new trk.TrackerMultiMarker(false, 320, 240, 80);
+      t.setup(result[0], result[1], 8, 6, 6, 6, 0);
+    })
+    callback(t)
+    return t;
   }
-  return t;
+}
+function fetchData(url, target) {
+  fetch(url).then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not OK');
+    }
+    return response.arrayBuffer();
+  })
+    .then(buff => {
+      console.log(buff);
+      let data = new Uint8Array(buff)
+      console.log(data);
+      _storeDataFile(data, target)
+    })
+}
+
+function _storeDataFile(data, target) {
+  // FS is provided by emscripten
+  // Note: valid data must be in binary format encoded as Uint8Array
+  trk.FS.writeFile(target, data, {
+    encoding: 'binary'
+  });
 }
 
 // transfer image
@@ -56,11 +89,5 @@ function writeStringToFS(target, string, callback) {
 
 function writeByteArrayToFS(target, byteArray, callback) {
   trk.FS.writeFile(target, byteArray, { encoding: 'binary' });
-  callback(byteArray);
-}
-
-function writeByteArrayToFS2(target, target2, byteArray, byteArray2, callback) {
-  trk.FS.writeFile(target, byteArray, { encoding: 'binary' });
-  trk.FS.writeFile(target2, byteArray2, { encoding: 'binary' });
   callback(byteArray);
 }
