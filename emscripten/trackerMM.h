@@ -1,4 +1,5 @@
 #include <ARToolKitPlus/TrackerMultiMarker.h>
+#include <ARToolKitPlus/Tracker.h>
 #include <ARToolKitPlus/ar.h>
 #include <algorithm>
 #include <emscripten/val.h>
@@ -51,6 +52,7 @@ private:
   int mWidth;
   int mHeight;
   int mPatternWidth;
+  ARMultiMarkerInfoT *config;
   vector<int> mMarkers;
   ARMarkerInfo *marker_info;
   int marker_num;

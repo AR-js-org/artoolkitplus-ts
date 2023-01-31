@@ -12,6 +12,7 @@ void TrackerMM::setup(string camParamFile, string multiFile, int maxImagePattern
   //  - works with luminance (gray) images
   //  - can load a maximum of "maxLoadPatterns" non-binary pattern
   //  - can detect a maximum of "maxImagePatterns" patterns in one image
+  config = 0;
   tracker = make_unique<ARToolKitPlus::TrackerMultiMarker>(
       this->mWidth, this->mHeight, maxImagePatterns, pattWidth, pattHeight,
       pattSamples, maxLoadPatterns);
@@ -32,12 +33,22 @@ void TrackerMM::setup(string camParamFile, string multiFile, int maxImagePattern
 
     return;
   }*/
-  if (!tracker->loadCameraFile(camParamFile.c_str(),  1.0f, 1000.0f)) {
+
+  if (config) {
+		tracker->arMultiFreeConfig(config);
+	}
+
+	if ((config = tracker->arMultiReadConfigFile(multiFile.c_str())) == NULL) {
+    printf("ERROR: arMultiReadConfigFile() failed\n");
+    tracker = nullptr;
+		return;
+	}
+  /*if (!tracker->loadCameraFile(camParamFile.c_str(),  1.0f, 1000.0f)) {
     printf("ERROR: loadCameraFile() failed\n");
     tracker = nullptr;
 
     return;
-  }
+  }*/
   tracker->getCamera()->printSettings();
   // define size of the marker
   //tracker->setPatternWidth(this->mPatternWidth);

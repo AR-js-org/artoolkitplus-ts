@@ -1,12 +1,12 @@
 var file_count = 0;
 import ARtoolKitPlus from '../build/artoolkitplus_em_ES6_debug.js'
-import TrackerMultiMarker from '../build/trackerMM_ES6.js'
+import TrackerMultiMarker from '../build/trackerMM_ES6_debug.js'
 const trk = await TrackerMultiMarker()
 const artoolkitplus = await ARtoolKitPlus()
 
 let t;
 export function loadCalib(url, callback, errorCallback) {
-  var filename = '/load_calib_' + file_count++ + '.cal';
+  var filename = '/load_calib_' + file_count++ + '.cfg';
   var writeCallback = function () {
     t = new trk.TrackerMultiMarker(false, 320, 240, 80);
     if (!t.setup) {
