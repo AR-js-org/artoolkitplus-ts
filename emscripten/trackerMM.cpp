@@ -25,9 +25,15 @@ void TrackerMM::setup(string camParamFile, string multiFile, int maxImagePattern
 
   // Initialize a Single Marker Tracker with
   // Camera and near and far clipping values for the OpenGL projection matrix
-  if (!tracker->init(camParamFile.c_str(), multiFile.c_str(), 1.0f, 1000.0f)) {
+  /*if (!tracker->init(camParamFile.c_str(), multiFile.c_str(), 1.0f, 1000.0f)) {
 
     printf("ERROR: init() failed\n");
+    tracker = nullptr;
+
+    return;
+  }*/
+  if (!tracker->loadCameraFile(camParamFile.c_str(),  1.0f, 1000.0f)) {
+    printf("ERROR: loadCameraFile() failed\n");
     tracker = nullptr;
 
     return;
