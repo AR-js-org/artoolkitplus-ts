@@ -10,8 +10,10 @@ function bytesToString(array) {
 
 function parseMultiFile(bytes) {
     var str = bytesToString(bytes);
+    console.log(str);
 
     var lines = str.split('\n');
+    console.log(lines);
 
     var files = [];
 
@@ -20,11 +22,13 @@ function parseMultiFile(bytes) {
 
     lines.forEach(function (line) {
         line = line.trim();
+        console.log(line);
         if (!line || line.startsWith('#')) return; // FIXME: Should probably be `if (line.indexOf('#') === 0) { return; }`
 
         switch (state) {
             case 0:
                 markers = +line;
+                console.log(markers);
                 state = 1;
                 return;
             case 1: // filename or barcode
@@ -41,6 +45,7 @@ function parseMultiFile(bytes) {
                 return;
         }
     });
+    console.log(files);
 
     return files;
 }
@@ -68,6 +73,7 @@ export function addMultiMarker(arId, url, callback, onError) {
         files = files.map(function (file) {
             return [path + '/' + file, file]
         });
+        console.log(files);
 
         ajaxDependencies(files, ok);
     }, function (error) { if (onError) onError(error) });
