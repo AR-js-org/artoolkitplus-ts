@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A simple example with artoolkitplus_em_ES6</title>
+</head>
+
+<body>
+    <script type="module">
+        import ARtoolKitPlus from '../build/artoolkitplus_em_ES6_debug.js'
+        import TrackerMultiMarker from '../build/trackerMM_ES6.js'
+        import { addMultiMarker } from './loader_TMM_ES6_new.js'
+        const artoolkitplus = await ARtoolKitPlus()
+        const trk = await TrackerMultiMarker()
+
+           addMultiMarker(0, "data/markerboard_480-499.cfg", function(id, num){
+            console.log(id);
+           }, function(err) { console.log(err);})
+    </script>
+</body>
+
+</html>

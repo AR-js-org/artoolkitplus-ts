@@ -8,11 +8,11 @@ let t;
 export function loadCalib(url, callback, errorCallback) {
   var filename = '/load_calib_' + file_count++ + '.cfg';
   var writeCallback = function () {
-    t = new trk.TrackerMultiMarker(false, 320, 240, 80);
+    t = new trk.TrackerMultiMarker(false, 320, 240, 40);
     if (!t.setup) {
       if (callback) callback(id); setTimeout(writeCallback, 10);
     } else {
-      if(t.setup(filename, filename,  8, 6, 6, 6, 0)) {
+      if(t.setup(filename, filename, 8, 6, 6, 6, 0)) {
         console.log("Init TrackerMultiMarker");
       };
       if (callback) callback(t);
@@ -32,6 +32,7 @@ export function loadCalib(url, callback, errorCallback) {
       })
       .then(buff => {
         let buffer = new Uint8Array(buff)
+        console.log(buffer);
         writeByteArrayToFS(filename, buffer, writeCallback);
       })
       .catch(error => {
