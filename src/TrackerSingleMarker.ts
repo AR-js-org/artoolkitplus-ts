@@ -1,5 +1,5 @@
 import { AbstractTrackerSingleMarker } from "./abstractions/AbstractTrackerSingleMarker";
-import { IImageObj } from "./abstractions/CommonInterfaces";
+import { IImageObj, TrackerOptions } from "./abstractions/CommonInterfaces";
 import { TrackerSingleMarkerLoader } from "./TrackerSingleMarkerLoader";
 import Utils from "./Utils"
 
@@ -7,12 +7,30 @@ export default class TrackerSingleMarker extends AbstractTrackerSingleMarker {
     private tracker: any;
     private marker_count: number
     private FS: any;
-    constructor(useBCH: boolean, cameraUrl: string, width: number, height: number, patternWidth: number) {
+    private maxImagePatterns: number;
+    private pattWidth: number;
+    private pattHeight: number;
+    private pattSamples: number;
+    private maxLoadPatterns: number;
+    constructor(useBCH: boolean, cameraUrl: string, width: number, height: number, patternWidth: number, options: TrackerOptions) {
         super(useBCH, cameraUrl, width, height, patternWidth)
         this.marker_count = 0;
+        if (!options) {
+            this.maxImagePatterns = 8;
+            this.pattWidth = 6;
+            this.pattHeight = 6;
+            this.pattSamples = 6;
+            this.maxLoadPatterns = 0;
+        } else {
+            this.maxImagePatterns = options.maxImagePatterns;
+            this.pattWidth = options.pattWidth;
+            this.pattHeight = options.pattHeight;
+            this.pattSamples = options.pattSamples;
+            this.maxLoadPatterns = options.maxLoadPatterns;
+        }
     }
-    static async initTrackerSingleMarker(useBCH: boolean, cameraUrl: string, width: number, height: number, patternWidth: number): Promise<any> {
-        const tracker = new TrackerSingleMarker(useBCH, cameraUrl, width, height, patternWidth);
+    static async initTrackerSingleMarker(useBCH: boolean, cameraUrl: string, width: number, height: number, patternWidth: number, options: TrackerOptions): Promise<any> {
+        const tracker = new TrackerSingleMarker(useBCH, cameraUrl, width, height, patternWidth, options);
         return await tracker.initTSM();
     };
 
@@ -58,7 +76,7 @@ export default class TrackerSingleMarker extends AbstractTrackerSingleMarker {
             try {
                 data = await Utils.fetchRemoteData(urlOrData);
             }
-            catch (error: any) {  throw new Error("Error in addPattern function: ", error); }
+            catch (error: any) { throw new Error("Error in addPattern function: ", error); }
         }
 
         this._storeDataFile(data, target);
@@ -71,7 +89,7 @@ export default class TrackerSingleMarker extends AbstractTrackerSingleMarker {
 
         this.FS = tsm.FS
 
-        this.tracker = await tsm.loadCalib(this.cameraUrl, this.useBCH, this.width, this.height, this.patternWidth)
+        this.tracker = await tsm.loadCalib(this.cameraUrl, this.useBCH, this.width, this.height, this.patternWidth, this.pattSamples, this.pattWidth, this.pattHeight, this.pattSamples, this.maxLoadPatterns)
 
         return this;
     }

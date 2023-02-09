@@ -26,6 +26,13 @@
         var vec, conf, corners, markerPos;
         var trk;
         var videoSize;
+        var options = {
+            maxImagePatterns: 6,
+            pattWidth: 16,
+            pattHeight: 16,
+            pattSamples: 256,
+            maxLoadPatterns: 4
+        }
 
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             var hint = {
@@ -64,13 +71,14 @@
                     canvas.width = canvasWidth;
                     canvas.height = canvasHeight;
                     if (video) {
-                        ARToolKitPlus.ARToolKitPlus.initAR().then((ar) => {console.log(ar);
-                            ARToolKitPlus.TrackerSingleMarker.initTrackerSingleMarker(false, "data/PGR_M12x0.5_2.5mm.cal", width, height, 80).then(
+                        ARToolKitPlus.ARToolKitPlus.initAR().then((ar) => {
+                            console.log(ar);
+                            ARToolKitPlus.TrackerSingleMarker.initTrackerSingleMarker(false, "data/PGR_M12x0.5_2.5mm.cal", width, height, 80, options).then(
                                 tracker => {
                                     console.log(tracker);
                                     tracker.setMarkerMode(ARToolKitPlus.ARToolKitPlus.MARKER_MODE.MARKER_TEMPLATE)
                                     tracker.addPattern('./data/patt.hiro')
-                                    
+
                                     trk = tracker;
                                     // Display the Pixel Format in use, just to test the static variables...
                                     console.log("PIXEL_FORMAT: ", ARToolKitPlus.ARToolKitPlus.PIXEL_FORMAT.PIXEL_FORMAT_LUM);
@@ -165,14 +173,14 @@
 
                 if (image_data.data) {
                     vec = trk.update(grayscale(image_data.data));
-                    console.log("Marker found is: ", vec.get(0));
+                    //console.log("Marker found is: ", vec.get(0));
                     conf = trk.getConfidence();
                     console.log("Marker confidence is: ", conf * 100, "%");
                     var matrix = trk.getModelViewMatrix();
                     console.log("Marker pose matrix is:", matrix);
                     ctx.putImageData(image_data, 0, 0);
                 }
-                if (conf == 0) {
+                if (conf > .6) {
                     //drawCircle(markerPos);
                     drawMarkerId(markerPos);
                     drawCorners(corners);
