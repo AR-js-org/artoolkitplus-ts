@@ -63,7 +63,7 @@ export class TrackerSingleMarkerLoader {
      * @param {string} urlOrData: the camera parameter, usually a path to a .cal file
      * @return {Promise} the tracker.
      */
-    public async loadCalib(urlOrData: Uint8Array | string, useBCH: boolean, width: number, height: number, patternWidth: number): Promise<AbstractTrackerSingleMarker> {
+    public async loadCalib(urlOrData: Uint8Array | string, useBCH: boolean, width: number, height: number, patternWidth: number, maxImagePatterns: number = 8, pattWidth: number = 6, pattHeight: number = 6, pattSamples: number = 6, maxLoadPatterns: number = 0): Promise<AbstractTrackerSingleMarker> {
         const target = "/load_calib_" + this.cameraCount++;
 
         let data: Uint8Array;
@@ -84,7 +84,7 @@ export class TrackerSingleMarkerLoader {
         this._storeDataFile(data, target);
 
         // return the internal marker ID
-        tracker.setup(target, 8, 6, 6, 6, 0)
+        tracker.setup(target, maxImagePatterns, pattWidth, pattHeight, pattSamples, maxLoadPatterns)
 
         return tracker;
     }

@@ -5,3 +5,11 @@ export interface IImageObj extends HTMLCanvasElement {
     height: number;
     data: Uint8ClampedArray;
   }
+
+export interface TrackerOptions {
+  maxImagePatterns: number,
+  pattWidth: number;
+  pattHeight: number,
+  pattSamples: number,
+  maxLoadPatterns: number
+}

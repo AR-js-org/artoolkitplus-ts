@@ -1,11 +1,16 @@
 import { AbstractTrackerSingleMarker } from "./abstractions/AbstractTrackerSingleMarker";
-import { IImageObj } from "./abstractions/CommonInterfaces";
+import { IImageObj, TrackerOptions } from "./abstractions/CommonInterfaces";
 export default class TrackerSingleMarker extends AbstractTrackerSingleMarker {
     private tracker;
     private marker_count;
     private FS;
-    constructor(useBCH: boolean, cameraUrl: string, width: number, height: number, patternWidth: number);
-    static initTrackerSingleMarker(useBCH: boolean, cameraUrl: string, width: number, height: number, patternWidth: number): Promise<any>;
+    private maxImagePatterns;
+    private pattWidth;
+    private pattHeight;
+    private pattSamples;
+    private maxLoadPatterns;
+    constructor(useBCH: boolean, cameraUrl: string, width: number, height: number, patternWidth: number, options: TrackerOptions);
+    static initTrackerSingleMarker(useBCH: boolean, cameraUrl: string, width: number, height: number, patternWidth: number, options: TrackerOptions): Promise<any>;
     setup: (cameraUrl: string) => void;
     update: (image: IImageObj) => void;
     getConfidence: () => number;
