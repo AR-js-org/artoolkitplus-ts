@@ -77,7 +77,9 @@
                                 tracker => {
                                     console.log(tracker);
                                     tracker.setMarkerMode(ARToolKitPlus.ARToolKitPlus.MARKER_MODE.MARKER_TEMPLATE)
-                                    tracker.addPattern('./data/patt.hiro')
+                                    tracker.addPattern('./data/patt.hiro').then((id) => {
+                                        console.log("Pattern template marker id: ", id);
+                                    })
 
                                     trk = tracker;
                                     // Display the Pixel Format in use, just to test the static variables...
@@ -158,7 +160,7 @@
                 overlayCtx.font = "10px serif";
                 overlayCtx.fillStyle = 'red';
                 overlayCtx.fill();
-                //overlayCtx.fillText(trk.getMarkerId(), markerPos.x + 10, markerPos.y + 10);
+                overlayCtx.fillText("Hiro", markerPos.x + 10, markerPos.y + 10);
                 overlayCtx.fillStyle = 'green';
                 overlayCtx.fill();
             }
@@ -173,15 +175,15 @@
 
                 if (image_data.data) {
                     vec = trk.update(grayscale(image_data.data));
-                    //console.log("Marker found is: ", vec.get(0));
+                    console.log("Marker found is: ", vec.get(0));
                     conf = trk.getConfidence();
                     console.log("Marker confidence is: ", conf * 100, "%");
                     var matrix = trk.getModelViewMatrix();
                     console.log("Marker pose matrix is:", matrix);
                     ctx.putImageData(image_data, 0, 0);
                 }
-                if (conf > .6) {
-                    //drawCircle(markerPos);
+                if (conf > .7) {
+                    drawCircle(markerPos);
                     drawMarkerId(markerPos);
                     drawCorners(corners);
                 } else {
