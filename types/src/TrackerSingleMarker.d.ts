@@ -7,7 +7,7 @@ export default class TrackerSingleMarker extends AbstractTrackerSingleMarker {
     constructor(useBCH: boolean, cameraUrl: string, width: number, height: number, patternWidth: number);
     static initTrackerSingleMarker(useBCH: boolean, cameraUrl: string, width: number, height: number, patternWidth: number): Promise<any>;
     setup: (cameraUrl: string) => void;
-    update: (image: IImageObj) => any;
+    update: (image: IImageObj) => void;
     getConfidence: () => number;
     getModelViewMatrix: () => number[];
     getMarkerPos: () => object;
