@@ -47,19 +47,18 @@ export default class TrackerSingleMarker extends AbstractTrackerSingleMarker {
     public async addPattern(urlOrData: any) {
         const target = '/marker_' + this.marker_count++;
 
-        let data;
+        let data: Uint8Array;
 
-        if (urlOrData.indexOf("\n") !== -1) {
-            // assume text from a .patt file
-
-            data = Utils.string2Uint8Data(urlOrData as string);
+        if (urlOrData instanceof Uint8Array) {
+            // assume data from a .patt file
+            data = urlOrData;
         } else {
             // fetch data via HTTP
 
             try {
-                data = await Utils.fetchRemoteData(urlOrData); console.log(data);
+                data = await Utils.fetchRemoteData(urlOrData);
             }
-            catch (error) { throw error; }
+            catch (error: any) {  throw new Error("Error in addPattern function: ", error); }
         }
 
         this._storeDataFile(data, target);
@@ -81,7 +80,7 @@ export default class TrackerSingleMarker extends AbstractTrackerSingleMarker {
         // FS is provided by emscripten
         // Note: valid data must be in binary format encoded as Uint8Array
         this.FS.writeFile(target, data, {
-            encoding: "binary"
+            encoding: "binary",
         });
     }
 }
