@@ -60,7 +60,7 @@ export default class TrackerSingleMarker extends AbstractTrackerSingleMarker {
   };
 
   public update = (image: IImageObj) => {
-    this.tracker.update(image);
+    return this.tracker.update(image);
   };
 
   public getConfidence = (): number => {
@@ -71,12 +71,52 @@ export default class TrackerSingleMarker extends AbstractTrackerSingleMarker {
     return this.tracker.getModelViewMatrix();
   };
 
+  public getMarkerId = (): number => {
+    return this.tracker.getMarkerId();
+  }
+
   public getMarkerPos = (): object => {
     return this.tracker.getMarkerPos();
   };
 
   public getMarkerVertexes = (): Array<number> => {
     return this.tracker.getMarkerVertexes();
+  };
+
+  public setPixelFormat = (pixelFormat: any) => {
+    this.tracker.setPixelFormat(pixelFormat);
+  }
+
+  public getPixelFormat(): any {
+    return this.tracker.getPixelFormat();
+  };
+
+  public getProjectionMatrix(): number[] {
+    return this.tracker.getProjectionMatrix();
+  };
+
+  public printCameraSettings(): void {
+    this.tracker.printCameraSettings();
+  };
+
+  public selectBestMarkerByCf(): number {
+    return this.tracker.selectBestMarkerByCf();
+  };
+
+  public setBorderWidth(nFraction: number) {
+    this.tracker.setBorderWidth(nFraction);
+  };
+
+  public setPatternWidth(width: number) {
+    this.tracker.setPatternWidth(width);
+  };
+
+  public setThreshold(nValue: number) {
+    this.tracker.setThreshold(nValue);
+  };
+
+  public setUndistortionMode(nMode: any) {
+    this.tracker.setUndistortionMode(nMode);
   };
 
   public setMarkerMode = (markerMode: any) => {
@@ -104,6 +144,7 @@ export default class TrackerSingleMarker extends AbstractTrackerSingleMarker {
     this._storeDataFile(data, target);
 
     return this.tracker.addPattern(target);
+
   }
 
   private async initTSM() {
