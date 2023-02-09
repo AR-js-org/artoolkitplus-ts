@@ -2,6 +2,7 @@ import { AbstractTrackerSingleMarker } from "./abstractions/AbstractTrackerSingl
 export declare class TrackerSingleMarkerLoader {
     private instance;
     private cameraCount;
+    FS: any;
     /**
      * Deafult constructor.
      */

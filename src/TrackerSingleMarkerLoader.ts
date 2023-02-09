@@ -5,6 +5,7 @@ import Utils from "./Utils";
 export class TrackerSingleMarkerLoader {
     private instance: any;
     private cameraCount: number;
+    public FS: any;
     /**
      * Deafult constructor.
      */
@@ -42,6 +43,7 @@ export class TrackerSingleMarkerLoader {
         ].forEach((method: string) => {
             this.converter()[method] = this.instance[method];
         });
+        this.FS = this.instance.FS
     }
 
     /**
