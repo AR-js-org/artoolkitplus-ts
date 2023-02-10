@@ -1,0 +1,6 @@
+emscripten/artoolkitplus
+build/CMakeFiles
+build/Makefile
+build/CMakeCache.txt
+build/cmake_install.cmake
+node_modules
