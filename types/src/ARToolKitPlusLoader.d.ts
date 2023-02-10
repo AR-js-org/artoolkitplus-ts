@@ -3,7 +3,7 @@ export declare class ARToolKitPlusLoader {
     private version;
     /**
      * Default constructor, print in the console the ARToolKitPlus version, example:
-     * ```ARToolKitPlus 0.2.0```
+     * ```ARToolKitPlus 0.3.1```
      */
     constructor();
     /**
