@@ -18,8 +18,8 @@ export abstract class AbstractTrackerSingleMarker {
     this.height = height;
     this.patternWidth = patternWidth;
   }
-  abstract setup: (cameraUrl: string) => void;
-  abstract update: (image: IImageObj) => void;
-  abstract getConfidence: () => number;
-  abstract getModelViewMatrix: () => Array<number>;
+  abstract setup(cameraUrl: string): void;
+  abstract update(image: IImageObj): void;
+  abstract getConfidence(): number;
+  abstract getModelViewMatrix(): Array<number>;
 }

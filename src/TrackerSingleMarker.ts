@@ -55,73 +55,73 @@ export default class TrackerSingleMarker extends AbstractTrackerSingleMarker {
     return await tracker.initTSM();
   }
 
-  public setup = (cameraUrl: string): void => {
+  public setup(cameraUrl: string): void {
     this.tracker.setup(cameraUrl, 8, 6, 6, 6, 0);
-  };
+  }
 
-  public update = (image: IImageObj) => {
+  public update(image: IImageObj) {
     return this.tracker.update(image);
-  };
+  }
 
-  public getConfidence = (): number => {
+  public getConfidence(): number {
     return this.tracker.getConfidence();
-  };
+  }
 
-  public getModelViewMatrix = (): number[] => {
+  public getModelViewMatrix(): number[] {
     return this.tracker.getModelViewMatrix();
-  };
+  }
 
-  public getMarkerId = (): number => {
+  public getMarkerId(): number {
     return this.tracker.getMarkerId();
   }
 
-  public getMarkerPos = (): object => {
+  public getMarkerPos(): object {
     return this.tracker.getMarkerPos();
-  };
+  }
 
-  public getMarkerVertexes = (): Array<number> => {
+  public getMarkerVertexes(): Array<number> {
     return this.tracker.getMarkerVertexes();
-  };
+  }
 
-  public setPixelFormat = (pixelFormat: any) => {
+  public setPixelFormat(pixelFormat: any) {
     this.tracker.setPixelFormat(pixelFormat);
   }
 
   public getPixelFormat(): any {
     return this.tracker.getPixelFormat();
-  };
+  }
 
   public getProjectionMatrix(): number[] {
     return this.tracker.getProjectionMatrix();
-  };
+  }
 
   public printCameraSettings(): void {
     this.tracker.printCameraSettings();
-  };
+  }
 
   public selectBestMarkerByCf(): number {
     return this.tracker.selectBestMarkerByCf();
-  };
+  }
 
   public setBorderWidth(nFraction: number) {
     this.tracker.setBorderWidth(nFraction);
-  };
+  }
 
   public setPatternWidth(width: number) {
     this.tracker.setPatternWidth(width);
-  };
+  }
 
   public setThreshold(nValue: number) {
     this.tracker.setThreshold(nValue);
-  };
+  }
 
   public setUndistortionMode(nMode: any) {
     this.tracker.setUndistortionMode(nMode);
-  };
+  }
 
-  public setMarkerMode = (markerMode: any) => {
+  public setMarkerMode(markerMode: any) {
     this.tracker.setMarkerMode(markerMode);
-  };
+  }
 
   public async addPattern(urlOrData: any) {
     const target = "/marker_" + this.marker_count++;
@@ -144,7 +144,6 @@ export default class TrackerSingleMarker extends AbstractTrackerSingleMarker {
     this._storeDataFile(data, target);
 
     return this.tracker.addPattern(target);
-
   }
 
   private async initTSM() {
