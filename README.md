@@ -4,24 +4,25 @@
 
 ## Build libs
 
-Emscripten libs are exported as ES6 modules, yopu can find two libs at the moment:
+Emscripten libs are exported as ES6 modules, you can find two libs at the moment:
 
 - `artoolkitplus_em_ES6.js` load the basic artoolkitplus enums and other functions.
 - `trackerSM_ES6.js` load the TrackerSingleMarker class
 
 For every libs there is the debug version, useful when you are developing.
 
-## Typescript feature
+## Typescript feature ❤️ 
 
-The project also support the Typescript language. Typescript source code is in the `/src` folder, and is bundled in the dist lib thanks to webpack. You can find type definitions in the `/types` folder.
+The project also support the **Typescript** language. Typescript source code is in the `/src` folder, and is bundled in the dist lib thanks to webpack. You can find type definitions in the `/types` folder.
 
-## Future features
+## Future features 🚀️ 
 
 - npm package
 - Multi Marker support
 - more examples
+- documentation
 
-## Examples
+## Examples 🎉️
 
 You can find a simple Single Marker example in the example folder. It load a static image and it detect the marker in it. Check in the browser console for the messages.
 If you want you can also test the video example ( stream from webcam ), check the output in the console, and a threejs example.
