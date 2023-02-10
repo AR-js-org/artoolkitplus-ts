@@ -1,5 +1,6 @@
 emscripten/artoolkitplus
 build/CMakeFiles
+build/emscripten
 build/Makefile
 build/CMakeCache.txt
 build/cmake_install.cmake
