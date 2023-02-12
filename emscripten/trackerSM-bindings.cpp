@@ -14,7 +14,12 @@ EMSCRIPTEN_BINDINGS(trackerSM) {
       .value("PIXEL_FORMAT_RGB565", PIXEL_FORMAT_RGB565)
       .value("PIXEL_FORMAT_LUM", PIXEL_FORMAT_LUM);
 
- class_<TrackerSM>("TrackerSingleMarker")
+  enum_<MARKER_MODE>("MARKER_MODE")
+      .value("MARKER_TEMPLATE", MARKER_TEMPLATE)
+      .value("MARKER_ID_SIMPLE", MARKER_ID_SIMPLE)
+      .value("MARKER_ID_BCH", MARKER_ID_BCH);
+
+  class_<TrackerSM>("TrackerSingleMarker")
       .constructor<bool, int, int, int>()
       .function("setup", &TrackerSM::setup)
       .function("update", &TrackerSM::update)

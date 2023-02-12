@@ -1,11 +1,11 @@
-const webpack = require('webpack');
-const path = require('path');
+const webpack = require("webpack");
+const path = require("path");
 
 const config = {
-  entry: './src/index.ts',
+  entry: "./src/index.ts",
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'ARToolKitPlus.js',
+    path: path.resolve(__dirname, "dist"),
+    filename: "ARToolKitPlus.js",
     library: "ARToolKitPlus",
     libraryTarget: "umd",
     // @see: https://github.com/webpack/webpack/issues/3929
@@ -15,28 +15,24 @@ const config = {
     rules: [
       {
         test: /\.js$/,
-        use: 'babel-loader',
-        exclude: /node_modules/
+        use: "babel-loader",
+        exclude: /node_modules/,
       },
       {
         test: /\.ts(x)?$/,
-        loader: 'ts-loader',
-        exclude: /node_modules/
-      }
-    ]
+        loader: "ts-loader",
+        exclude: /node_modules/,
+      },
+    ],
   },
   resolve: {
-    extensions: [
-      '.tsx',
-      '.ts',
-      '.js'
-    ],
+    extensions: [".tsx", ".ts", ".js"],
     // @see https://stackoverflow.com/questions/59487224/webpack-throws-error-with-emscripten-cant-resolve-fs
     fallback: {
-        fs: false,
-        path: false,
-        crypto: false,
-      },
+      fs: false,
+      path: false,
+      crypto: false,
+    },
   },
 };
 

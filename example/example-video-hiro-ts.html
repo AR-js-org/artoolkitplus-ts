@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A simple example with artoolkitplus_em and new dist lib</title>
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+    <video id="video" autoplay loop muted playsinline></video>
+    <canvas id="canvas"></canvas>
+    <script src="../dist/ARToolKitPlus.js"></script>
+
+    <script>
+
+        var canvas = document.getElementById('canvas');
+        var overlayCanvas = null;
+        var ctx = canvas.getContext('2d');
+        var width = 640, height = 480;
+        var canvasWidth;
+        var canvasHeight;
+        var vec, conf, corners, markerPos;
+        var trk;
+        var videoSize;
+        var options = {
+            maxImagePatterns: 6,
+            pattWidth: 16,
+            pattHeight: 16,
+            pattSamples: 256,
+            maxLoadPatterns: 4
+        }
+
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            var hint = {
+                audio: false,
+                video: true
+            };
+            if (window.innerWidth < 800) {
+                var width = (window.innerWidth < window.innerHeight) ? 240 : 360;
+                var height = (window.innerWidth < window.innerHeight) ? 360 : 240;
+
+                var aspectRatio = window.innerWidth / window.innerHeight;
+
+                console.log(width, height);
+
+                hint = {
+                    audio: false,
+                    video: {
+                        facingMode: 'environment',
+                        width: { min: width, max: width }
+                    },
+                };
+
+                console.log(hint);
+            }
+
+            navigator.mediaDevices.getUserMedia(hint).then(function (stream) {
+                video.srcObject = stream;
+                video.addEventListener('loadedmetadata', function (e) {
+                    video.play();
+
+                    console.log('video', video, video.videoWidth, video.videoHeight);
+                    videoSize = video.videoWidth * video.videoHeight;
+
+                    canvasWidth = video.videoWidth;
+                    canvasHeight = video.videoHeight;
+                    canvas.width = canvasWidth;
+                    canvas.height = canvasHeight;
+                    if (video) {
+                        ARToolKitPlus.ARToolKitPlus.initAR().then((ar) => {
+                            console.log(ar);
+                            ARToolKitPlus.TrackerSingleMarker.initTrackerSingleMarker(false, "data/PGR_M12x0.5_2.5mm.cal", width, height, 80, options).then(
+                                tracker => {
+                                    console.log(tracker);
+                                    tracker.setMarkerMode(ARToolKitPlus.ARToolKitPlus.MARKER_MODE.MARKER_TEMPLATE)
+                                    tracker.addPattern('./data/patt.hiro').then((id) => {
+                                        console.log("Pattern template marker id: ", id);
+                                    })
+
+                                    trk = tracker;
+                                    // Display the Pixel Format in use, just to test the static variables...
+                                    console.log("PIXEL_FORMAT: ", ARToolKitPlus.ARToolKitPlus.PIXEL_FORMAT.PIXEL_FORMAT_LUM);
+                                    createOverlayCanvas()
+                                    process();
+                                })
+                        })
+                    }
+
+                });
+            });
+
+            function grayscale(data) {
+                // Code taken from jsartoolkit5 repository https://github.com/webarkit/jsartoolkit5/blob/master/js/artoolkit.api.js
+                let out = [];
+
+                var q = 0;
+                // Create luma from video data assuming Pixelformat AR_PIXEL_FORMAT_RGBA (ARToolKitJS.cpp L: 43)
+
+                for (var p = 0; p < videoSize; p++) {
+                    var r = data[q + 0], g = data[q + 1], b = data[q + 2];
+                    // videoLuma[p] = (r+r+b+g+g+g)/6;         // https://stackoverflow.com/a/596241/5843642
+                    out[p] = (r + r + r + b + g + g + g + g) >> 3;
+                    q += 4;
+                }
+                return out;
+            }
+
+            // We get the marker center position to draw a small circle.
+            function drawCircle(markerPos) {
+                const overlayCtx = overlayCanvas.getContext("2d");
+                clearOverlayCtx();
+
+                const radius = 5;
+                overlayCtx.beginPath();
+                overlayCtx.arc(markerPos.x, markerPos.y, radius, 0, 2 * Math.PI, false);
+                overlayCtx.fillStyle = 'green';
+                overlayCtx.fill();
+                overlayCtx.lineWidth = 2;
+                overlayCtx.strokeStyle = '#003300';
+                overlayCtx.stroke();
+            }
+
+            function createOverlayCanvas() {
+                overlayCanvas = document.createElement("canvas");
+                overlayCanvas.id = "overlay";
+                overlayCanvas.width = canvasWidth;
+                overlayCanvas.height = canvasHeight;
+                overlayCanvas.style.zIndex = 100;
+                document.body.appendChild(overlayCanvas);
+            }
+
+            function clearOverlayCtx() {
+                const overlayCtx = overlayCanvas.getContext("2d");
+                overlayCtx.clearRect(0, 0, width, height);
+            }
+
+            // We get the 4 corners of the marker to draw a rectangle around it.
+            function drawCorners(corners) {
+                const overlayCtx = overlayCanvas.getContext("2d");
+
+                overlayCtx.beginPath();
+                overlayCtx.strokeStyle = "blue";
+                overlayCtx.lineWidth = 3;
+                // [x1,y1,x2,y2,x3,y3,x4,y4]
+                overlayCtx.moveTo(corners[0], corners[1]);
+                overlayCtx.lineTo(corners[2], corners[3]);
+                overlayCtx.lineTo(corners[4], corners[5]);
+                overlayCtx.lineTo(corners[6], corners[7]);
+                overlayCtx.lineTo(corners[0], corners[1]);
+
+                overlayCtx.stroke();
+            }
+
+            function drawMarkerId(markerPos) {
+                const overlayCtx = overlayCanvas.getContext("2d");
+                overlayCtx.font = "10px serif";
+                overlayCtx.fillStyle = 'red';
+                overlayCtx.fill();
+                overlayCtx.fillText("Hiro", markerPos.x + 10, markerPos.y + 10);
+                overlayCtx.fillStyle = 'green';
+                overlayCtx.fill();
+            }
+
+            function process() {
+                corners = trk.getMarkerVertexes();
+                // Print in the console the vertexes (corners) of the marker rect
+                console.log("corners: ", corners);
+                markerPos = trk.getMarkerPos();
+                ctx.drawImage(video, 0, 0, width, height);
+                var image_data = ctx.getImageData(0, 0, width, height);
+
+                if (image_data.data) {
+                    vec = trk.update(grayscale(image_data.data));
+                    console.log("Marker found is: ", vec.get(0));
+                    conf = trk.getConfidence();
+                    console.log("Marker confidence is: ", conf * 100, "%");
+                    var matrix = trk.getModelViewMatrix();
+                    console.log("Marker pose matrix is:", matrix);
+                    ctx.putImageData(image_data, 0, 0);
+                }
+                if (conf > .7) {
+                    drawCircle(markerPos);
+                    drawMarkerId(markerPos);
+                    drawCorners(corners);
+                } else {
+                    clearOverlayCtx()
+                }
+
+                requestAnimationFrame(process);
+            }
+        }
+
+    </script>
+</body>
+
+</html>

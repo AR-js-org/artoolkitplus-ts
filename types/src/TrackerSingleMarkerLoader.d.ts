@@ -2,6 +2,7 @@ import { AbstractTrackerSingleMarker } from "./abstractions/AbstractTrackerSingl
 export declare class TrackerSingleMarkerLoader {
     private instance;
     private cameraCount;
+    FS: any;
     /**
      * Deafult constructor.
      */
@@ -28,7 +29,7 @@ export declare class TrackerSingleMarkerLoader {
      * @param {string} urlOrData: the camera parameter, usually a path to a .cal file
      * @return {Promise} the tracker.
      */
-    loadCalib(urlOrData: Uint8Array | string, useBCH: boolean, width: number, height: number, patternWidth: number): Promise<AbstractTrackerSingleMarker>;
+    loadCalib(urlOrData: Uint8Array | string, useBCH: boolean, width: number, height: number, patternWidth: number, maxImagePatterns?: number, pattWidth?: number, pattHeight?: number, pattSamples?: number, maxLoadPatterns?: number): Promise<AbstractTrackerSingleMarker>;
     /**
      * Used internally by LoadCamera method
      * @return {void}

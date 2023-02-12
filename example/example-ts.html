@@ -34,6 +34,8 @@
                             console.log("Marker confidence is: ", conf * 100, "%");
                             var matrix = tracker.getModelViewMatrix();
                             console.log("Marker pose matrix is:", matrix);
+                            var projMatrix = tracker.getProjectionMatrix();
+                            console.log("Camera proj matrix is:", projMatrix);
                         })
 
                 })
