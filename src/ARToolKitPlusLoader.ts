@@ -7,7 +7,7 @@ export class ARToolKitPlusLoader {
   private version: string;
   /**
    * Default constructor, print in the console the ARToolKitPlus version, example:
-   * ```ARToolKitPlus 0.3.1```
+   * ```ARToolKitPlus 0.3.2```
    */
   constructor() {
     // reference to WASM module
