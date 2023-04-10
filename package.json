@@ -36,7 +36,7 @@
     "webpack": "^5.77.0",
     "webpack-cli": "^5.0.1",
     "babel-loader": "^9.1.2",
-    "rimraf": "^4.4.1",
+    "rimraf": "^5.0.0",
     "@babel/core": "^7.21.4",
     "@babel/preset-env": "^7.21.4",
     "typescript": "^5.0.3",
