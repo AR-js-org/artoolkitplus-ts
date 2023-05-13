@@ -63,6 +63,7 @@ export class TrackerSingleMarkerLoader {
    */
   public async loadCalib(
     urlOrData: Uint8Array | string,
+    cameraFileType: string,
     useBCH: boolean,
     width: number,
     height: number,
@@ -73,7 +74,17 @@ export class TrackerSingleMarkerLoader {
     pattSamples: number = 6,
     maxLoadPatterns: number = 0
   ): Promise<AbstractTrackerSingleMarker> {
-    const target = "/load_calib_" + this.cameraCount++;
+    var cmt: string;
+    if(cameraFileType== 'xml') 
+    {
+      cmt = '.xml';
+    }
+    else if(cameraFileType== 'cal')
+    {
+      cmt = '.cal';
+    }
+    else throw new Error("Error in loadCalib function: cameraFileType must be either 'xml' or 'cal'");
+    const target = "/load_calib_" + this.cameraCount++ + cmt;
 
     let data: Uint8Array;
     const tracker = new this.instance.TrackerSingleMarker(

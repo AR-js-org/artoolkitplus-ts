@@ -5,8 +5,15 @@ const trk = await TrackerSingleMarker();
 const artoolkitplus = await ARtoolKitPlus();
 
 let t;
-export function loadCalib(url, callback, errorCallback) {
-  var filename = "/load_calib_" + file_count++ + ".cal";
+export function loadCalib(url, cameraFileType,  callback, errorCallback) {
+  var cmt;
+  if (cameraFileType == 'cal') {
+    cmt = '.cal';
+  }
+  else if (cameraFileType == 'xml') {
+    cmt = '.xml';
+  } else throw new Error("Unknown camera file type: " + cameraFileType);
+  var filename = "/load_calib_" + file_count++ + cmt;
   var writeCallback = function () {
     t = new trk.TrackerSingleMarker(false, 320, 240, 80);
     if (!t.setup) {
