@@ -1,6 +1,7 @@
 import { IImageObj } from "./CommonInterfaces";
 export abstract class AbstractTrackerSingleMarker {
   protected cameraUrl: string;
+  protected cameraFileType: string;
   protected useBCH: boolean;
   protected width: number;
   protected height: number;
@@ -8,11 +9,13 @@ export abstract class AbstractTrackerSingleMarker {
   constructor(
     useBCH: boolean,
     cameraUrl: string,
+    cameraFileType: string,
     width: number,
     height: number,
     patternWidth: number
   ) {
     this.cameraUrl = cameraUrl;
+    this.cameraFileType = cameraFileType;
     this.useBCH = useBCH;
     this.width = width;
     this.height = height;

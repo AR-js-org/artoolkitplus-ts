@@ -15,12 +15,13 @@ export default class TrackerSingleMarker extends AbstractTrackerSingleMarker {
   constructor(
     useBCH: boolean,
     cameraUrl: string,
+    cameraFileType: string,
     width: number,
     height: number,
     patternWidth: number,
     options: TrackerOptions
   ) {
-    super(useBCH, cameraUrl, width, height, patternWidth);
+    super(useBCH, cameraUrl, cameraFileType, width, height, patternWidth);
     this.marker_count = 0;
     if (!options) {
       this.maxImagePatterns = 8;
@@ -39,6 +40,7 @@ export default class TrackerSingleMarker extends AbstractTrackerSingleMarker {
   static async initTrackerSingleMarker(
     useBCH: boolean,
     cameraUrl: string,
+    cameraFileType: string,
     width: number,
     height: number,
     patternWidth: number,
@@ -47,6 +49,7 @@ export default class TrackerSingleMarker extends AbstractTrackerSingleMarker {
     const tracker = new TrackerSingleMarker(
       useBCH,
       cameraUrl,
+      cameraFileType,
       width,
       height,
       patternWidth,
@@ -153,6 +156,7 @@ export default class TrackerSingleMarker extends AbstractTrackerSingleMarker {
 
     this.tracker = await tsm.loadCalib(
       this.cameraUrl,
+      'xml',
       this.useBCH,
       this.width,
       this.height,

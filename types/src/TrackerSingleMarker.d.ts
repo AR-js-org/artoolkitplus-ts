@@ -9,8 +9,8 @@ export default class TrackerSingleMarker extends AbstractTrackerSingleMarker {
     private pattHeight;
     private pattSamples;
     private maxLoadPatterns;
-    constructor(useBCH: boolean, cameraUrl: string, width: number, height: number, patternWidth: number, options: TrackerOptions);
-    static initTrackerSingleMarker(useBCH: boolean, cameraUrl: string, width: number, height: number, patternWidth: number, options: TrackerOptions): Promise<any>;
+    constructor(useBCH: boolean, cameraUrl: string, cameraFileType: string, width: number, height: number, patternWidth: number, options: TrackerOptions);
+    static initTrackerSingleMarker(useBCH: boolean, cameraUrl: string, cameraFileType: string, width: number, height: number, patternWidth: number, options: TrackerOptions): Promise<any>;
     setup(cameraUrl: string): void;
     update(image: IImageObj): any;
     getConfidence(): number;
